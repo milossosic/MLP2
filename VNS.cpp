@@ -3,6 +3,19 @@
 
 VNS::VNS()
 {
+	MAXIter = 20;
+	kMax = 5;
+	std::uniform_int_distribution<int> d1(0, 12312);
+	distribution = d1;
+}
+
+VNS::VNS(Instance & inst)
+{
+	MAXIter = 20;
+	kMax = 5;
+	std::uniform_int_distribution<int> d1(0, 12312);
+	distribution = d1;
+	sol = *(new Solution(inst));
 }
 
 VNS::~VNS()
@@ -95,7 +108,7 @@ void VNS::swapTwoNeighborhoodSearch(bool fix)
 
 	if (!fix)
 	{
-		for (int i = 0; i < sol.route.size() - 1; i++)
+		for (int i = 1; i < sol.route.size() - 1; i++)
 		{
 			for (int j = i + 1; j < sol.route.size(); j++)
 			{
@@ -113,7 +126,7 @@ void VNS::swapTwoNeighborhoodSearch(bool fix)
 	}
 	else
 	{
-		int i = rand(0,sol.route.size());
+		int i = rand(1,sol.route.size());
 		for (int j = 0; j < sol.route.size(); j++)
 		{
 			oldCost = sol.cost;
@@ -138,7 +151,7 @@ void VNS::swapAdjacentNeighborhoodSearch(bool fix)
 	vector<int> bestRoute = vector<int>(sol.route);
 	if (!fix)
 	{
-		for (int i = 0; i < sol.route.size() - 1; i++)
+		for (int i = 1; i < sol.route.size() - 1; i++)
 		{
 			oldCost = sol.cost;
 			sol.swapAdjacent(i);
@@ -154,7 +167,7 @@ void VNS::swapAdjacentNeighborhoodSearch(bool fix)
 	}
 	else
 	{
-		int i = rand(0, sol.route.size() - 1);
+		int i = rand(1, sol.route.size() - 1);
 		oldCost = sol.cost;
 		sol.swapAdjacent(i);
 		sol.totalCost();
@@ -177,9 +190,9 @@ void VNS::removeInsertNeighborhoodSearch(bool fix)
 	vector<int> bestRoute = vector<int>(sol.route);
 	if (!fix)
 	{
-		for (int i = 0; i < sol.route.size(); i++)
+		for (int i = 1; i < sol.route.size(); i++)
 		{
-			for (int j = 0; j < sol.route.size(); j++)
+			for (int j = 1; j < sol.route.size(); j++)
 			{
 				if (i == j)
 					continue;
@@ -199,8 +212,8 @@ void VNS::removeInsertNeighborhoodSearch(bool fix)
 	}
 	else
 	{
-		int i = rand(0, sol.route.size());
-		for (int j = 0; j < sol.route.size(); j++)
+		int i = rand(1, sol.route.size());
+		for (int j = 1; j < sol.route.size(); j++)
 		{
 			if (i == j)
 				continue;
@@ -226,7 +239,7 @@ void VNS::twoOptNeighborhoodSearch(bool fix)
 	vector<int> bestRoute = vector<int>(sol.route);
 	if (!fix)
 	{
-		for (int i = 0; i < sol.route.size()-2; i++)
+		for (int i = 1; i < sol.route.size()-2; i++)
 		{
 			for (int j = i+2; j < sol.route.size(); j++)
 			{
@@ -246,7 +259,7 @@ void VNS::twoOptNeighborhoodSearch(bool fix)
 	}
 	else
 	{
-		int i = rand(0, sol.route.size() - 2);
+		int i = rand(1, sol.route.size() - 2);
 		for (int j = i+2; j < sol.route.size(); j++)
 		{
 			oldCost = sol.cost;
@@ -272,7 +285,7 @@ void VNS::orOptNeighborhoodSearch(bool fix)
 	vector<int> bestRoute = vector<int>(sol.route);
 	if (!fix)
 	{
-		for (int i = 0; i < sol.route.size() - 5; i++)
+		for (int i = 1; i < sol.route.size() - 5; i++)
 		{
 			for (int j = i + 2; j < sol.route.size()-3; j++)
 			{
@@ -296,7 +309,7 @@ void VNS::orOptNeighborhoodSearch(bool fix)
 	}
 	else
 	{
-		int i = rand(0, sol.route.size() - 5);
+		int i = rand(1, sol.route.size() - 5);
 		for (int j = i + 2; j < sol.route.size() - 3; j++)
 		{
 			for (int k = j + 2; k < sol.route.size() - 1; k++)
@@ -322,29 +335,29 @@ void VNS::orOptNeighborhoodSearch(bool fix)
 
 void VNS::swapTwoShake()
 {
-	int i = rand(0, sol.route.size());
+	int i = rand(1, sol.route.size());
 	int j;
-	while (i == (j = rand(0, sol.route.size())));
+	while (i == (j = rand(1, sol.route.size())));
 	sol.swapTwo(i, j);
 	sol.totalCost();
 }
 void VNS::swapAdjacentShake()
 {
-	int i = rand(0, sol.route.size() - 1);
+	int i = rand(1, sol.route.size() - 1);
 	sol.swapAdjacent(i);
 	sol.totalCost();
 }
 void VNS::removeInsertShake()
 {
-	int i = rand(0, sol.route.size());
+	int i = rand(1, sol.route.size());
 	int j;
-	while (i == (j = rand(0, sol.route.size())));
+	while (i == (j = rand(1, sol.route.size())));
 	sol.removeInsert(i, j);
 	sol.totalCost();
 }
 void VNS::twoOptShake()
 {
-	int i = rand(0, sol.route.size() - 2);
+	int i = rand(1, sol.route.size() - 2);
 	int j;
 	j = rand(i+2, sol.route.size());
 	sol.twoOpt(i, j);
@@ -352,7 +365,7 @@ void VNS::twoOptShake()
 }
 void VNS::orOptShake()
 {
-	int i = rand(0, sol.route.size() - 5);
+	int i = rand(1, sol.route.size() - 5);
 	int j = rand(i + 2, sol.route.size() - 3);
 	int k = rand(j + 2, sol.route.size());
 	sol.orOpt(i, j, k);

@@ -6,6 +6,7 @@
 #include <iostream>
 #include "ILS.h"
 #include "VNS.h"
+#include <ctime>
 using namespace std;
 
 Test::Test()
@@ -19,44 +20,50 @@ Test::~Test()
 
 void Test::run()
 {
+	time_t t = clock();
+
 	Config conf;
 	Writer writer(conf);
 	//conf.fIn = "instances/gr17.xml"; 
-	//conf.fIn = "instances/dantzig42.xml";
+	conf.fIn = "instances/dantzig42.xml";
 	//conf.fIn = "instances/swiss42.xml";
 	//conf.fIn = "instances/gr48.xml"; 
 	//conf.fIn = "instances/att48.xml";
 	//conf.fIn = "instances/hk48.xml";
-	conf.fIn = "instances/eil51.xml";
+	//conf.fIn = "instances/eil51.xml";
 	//conf.fIn = "instances/berlin52.xml";
 	
-	conf.fIn = "instances/st70.xml";
+	//conf.fIn = "instances/st70.xml";
 	Reader reader(conf);
 	Instance inst;
-
-
+	
 	reader.read(conf, inst);
 
-	Solution s(inst);
+	VNS vns(inst);
 
+	
+	Algorithms::greedySolution(vns.sol);
+	vns.sol.totalCost();
+	writer.writeRoute(vns.sol, inst);
+	
+	vns.run();
+	writer.writeRoute(vns.sol,inst);
+	writer.out << "time: " << ((float)(clock() - t)) / CLOCKS_PER_SEC;
+	
 
-	Algorithms::greedySolution(s);
-	s.totalCost();
-
-	writer.writeRoute(s, inst);
-	writer.out << endl;
 	/*writer.out << "swapAdjacent - 0" << endl;
 	s.swapAdjacent(0);
 	writer.writeRoute(s, inst);
 	s.swapAdjacent(0);
 	writer.writeRoute(s, inst);
 
+	
 	writer.out << "swapTwo - 0, 8" << endl;
 	s.swapTwo(0,8);
 	writer.writeRoute(s, inst);
 	s.swapTwo(0,8);
 	writer.writeRoute(s, inst);
-
+	/*
 	writer.out << "removeInsert - 0, 8" << endl;
 	s.removeInsert(0,8);
 	writer.writeRoute(s, inst);
@@ -74,24 +81,24 @@ void Test::run()
 	writer.writeRoute(s, inst);
 	s.orOpt(5, 9, 14);
 	writer.writeRoute(s, inst);
-	for (int i = 0; i < s.route.size()-1;i++)
-	///for (int j = i+1; j < s.route.size(); j++)
-	//for (int k = j + 2; k < s.route.size() - 1; k++)
+	
+	for (int i = 1; i < s.route.size()-1;i++)
+	for (int j = i+1; j < s.route.size(); j++)
+	//	for (int k = j + 2; k < s.route.size() - 1; k++)
 	{
 		
-		s.swapAdjacent(i);
+		s.swapTwo(i,j);
 		s.totalCost();
 		writer.writeRoute(s,inst);
-		s.swapAdjacent(i);
-		s.totalCost();
+		s.swapTwo(i,j);
+		//s.totalCost();
 		writer.writeRoute(s, inst);
 		writer.out << endl;
 	}*/
+	
+	
 
-	VNS vns(s);
-
-	vns.run();
-	writer.writeRoute(vns.sol,inst);
-
+	
+	
 	writer.close();
 }

@@ -12,7 +12,6 @@ Solution::Solution(Instance & inst1)
 	int dim = inst.dimension;
 	nodesVisited.resize(dim);
 	nodesVisited[0] = true;
-	//route.resize(dim);
 	for (int i = 0; i < dim; i++)
 	{
 		vector<pair<int, double>> temp;
@@ -29,10 +28,35 @@ Solution::~Solution()
 {
 }
 
+void Solution::reoptimizeDataStructures()
+{
+	for (int i = 0; i < route.size(); i++)
+	{
+		for (int j = 0; j < route.size(); j++)
+		{
+			if (i == j)
+			{
+				T[i][j] = 0;
+				C[i][j] = 0;
+				if (i == 0) W[0][0] = 0;
+				else W[i][j] = 1;
+			}
+			if (i < j)
+			{
+				T[i][j] = T[i][j - 1] + inst.cost[route[j-1]][route[j]];
+				W[i][j] = W[i][j - 1] + 1;
+				C[i][j] = C[i][j - 1] + T[i][j - 1] + inst.cost[route[j - 1]][route[j]];
+			}
+			else
+			{
+
+			}
+		}
+	}
+}
 void Solution::setRouteNode(int i, int j)
 {
 	route.push_back(j);
-	//route[i] = j;
 	nodesVisited[j] = true;
 }
 
@@ -44,8 +68,8 @@ bool Solution::nodeFree(int j)
 double Solution::totalCost()
 {
 	double totalCost = 0;
-	int dim = route.size()+1;
-	totalCost = dim-- * inst.cost[0][route.front()];
+	int dim = route.size();
+	//totalCost = dim-- * inst.cost[0][route.front()];
 	
 	for (auto itPrev = route.begin(), itNext = itPrev; ++itNext!=route.end();)
 	{
@@ -76,51 +100,21 @@ void Solution::removeInsert(int i, int j)
 }
 void Solution::swapTwo(int i, int j)
 {
-	int dim = route.size();
+	int dim = route.size()+1;
+	if (i > j)
+	{
+		int temp = i;
+		i = j;
+		j = temp;
+	}
 	int temp, t1, t2;
-	/*if (i == 0)
-	{
-		t1 = (dim - i)*(inst.cost[0][route[i]]);
-	}
-	else
-	{
-		t1 = (dim - i)*(inst.cost[route[i - 1]][route[i]]);
-	}
-	t2 = (dim - i - 1)*(inst.cost[route[i]][route[i + 1]]);
-	cost -= t1 + t2;
-	if (i + 1 != j)
-	{
-		t1 = (dim - j)*(inst.cost[route[j - 1]][route[j]]);
-		cost -= t1;
-	}
-	if (j < dim - 1)
-	{
-		t1 = (dim - j - 1)*(inst.cost[route[j]][route[j + 1]]);
-		cost -= t1;
-	}*/
+
 	temp = route[i];
 	route[i] = route[j];
 	route[j] = temp;
-	/*if (i == 0)
-	{
-		t1 = (dim - i)*(inst.cost[0][route[i]]);
-	}
-	else
-	{
-		t1 = (dim - i)*(inst.cost[route[i - 1]][route[i]]);
-	}
-	t2 = (dim - i - 1)*(inst.cost[route[i]][route[i + 1]]);
-	cost += t1 + t2;
-	if (i + 1 != j)
-	{
-		t1 = (dim - j)*(inst.cost[route[j - 1]][route[j]]);
-		cost += t1;
-	}
-	if (j < dim - 1)
-	{
-		t1 = (dim - j - 1)*(inst.cost[route[j]][route[j + 1]]);
-		cost += t1;
-	}*/
+
+	
+	
 }
 void Solution::swapAdjacent(int i)
 {

@@ -44,6 +44,7 @@ bool Algorithms::comparePairBySecond(pair<int, double> & a, pair<int, double> & 
 
 void Algorithms::greedySolution(Solution & s)
 {
+	s.setRouteNode(0, 0);
 	for (int i = 0; i < s.inst.dimension; i++)
 	{
 		for (int j = 0; j < s.inst.dimension; j++)

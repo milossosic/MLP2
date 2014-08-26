@@ -6,6 +6,7 @@ class VNS
 {
 public:
 	VNS();
+	VNS(Instance & inst);
 	VNS(Solution & s);
 	~VNS();
 

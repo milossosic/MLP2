@@ -16,7 +16,7 @@ Writer::~Writer()
 
 void Writer::writeRoute(Solution & s, Instance &inst)
 {
-	out << "0 ";
+	//out << "0 ";
 	for (auto it = s.route.begin(); it != s.route.end(); it++)
 		out << *it << " ";
 	out << endl;
