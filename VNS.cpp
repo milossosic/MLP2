@@ -87,7 +87,7 @@ void VNS::VND()
 			kVND = 0;
 			bestCost = sol.cost;
 			bestRoute = vector<int>(sol.route);
-			sol.reoptimizeDataStructures();
+			
 			//std::cout << sol.cost;
 		}
 		else
@@ -96,6 +96,7 @@ void VNS::VND()
 			sol.cost = bestCost;
 			sol.route = vector<int>(bestRoute);
 		}
+		sol.reoptimizeDataStructures();
 	}
 	sol.cost = bestCost;
 	sol.route = vector<int>(bestRoute);
@@ -192,6 +193,7 @@ void VNS::removeInsertNeighborhoodSearch(bool fix)
 {
 	int oldCost = sol.cost;
 	int bestCost = sol.cost;
+	int iBest=-1, jBest;
 	int x;
 	vector<int> bestRoute = vector<int>(sol.route);
 	if (!fix)
@@ -205,11 +207,11 @@ void VNS::removeInsertNeighborhoodSearch(bool fix)
 				if ((x = sol.costRemoveInsert(i, j)) < bestCost)
 				{
 					bestCost = x;
-					sol.removeInsert(i, j);
-					bestRoute = vector<int>(sol.route);
-					sol.removeInsert(j, i);
+					iBest = i;
+					jBest = j;
 				}
 				/*oldCost = sol.cost;
+				
 				x = sol.costRemoveInsert(i, j);
 				sol.removeInsert(i, j);
 				sol.totalCost();
@@ -238,7 +240,8 @@ void VNS::removeInsertNeighborhoodSearch(bool fix)
 			if ((x = sol.costRemoveInsert(i, j)) < bestCost)
 			{
 				bestCost = x;
-				bestRoute = vector<int>(sol.route);
+				iBest = i;
+				jBest = j;
 			}
 			/*oldCost = sol.cost;
 			sol.removeInsert(i, j);
@@ -252,8 +255,12 @@ void VNS::removeInsertNeighborhoodSearch(bool fix)
 			sol.removeInsert(j, i);*/
 		}
 	}
-	sol.cost = bestCost;
-	sol.route = vector<int>(bestRoute);
+	
+	if (iBest != -1)
+	{
+		sol.cost = bestCost;
+		sol.removeInsert(iBest, jBest);
+	}
 }
 void VNS::twoOptNeighborhoodSearch(bool fix)
 {
