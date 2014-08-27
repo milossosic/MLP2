@@ -49,11 +49,96 @@ void Solution::reoptimizeDataStructures()
 			}
 			else
 			{
-
+				T[i][j] = T[j][i];
+				W[i][j] = W[j][i];
+				C[i][j] = C[j][i];
 			}
 		}
 	}
 }
+int Solution::mergeT(int l1, int r1, int l2, int r2)
+{
+	return T[route[l1]][route[r1]] + inst.cost[route[r1]][route[l2]] + T[route[l2]][route[r2]];
+}
+int Solution::mergeW(int l1, int r1, int l2, int r2)
+{
+	return W[route[l1]][route[r1]] + W[route[l2]][route[r2]];
+}
+int Solution::mergeC(int l1, int r1, int l2, int r2)
+{
+	return C[route[l1]][route[r1]] + W[route[l2]][route[r2]] * (T[route[l1]][route[r1]] + inst.cost[route[r1]][route[l2]]) + C[route[l2]][route[r2]];
+}
+int Solution::costRemoveInsert(int i, int j)
+{
+	int t1, t2, t3, t4;
+	int w1, w2, w3, w4;
+	int c1, c2, c3, c4;
+	if (i < j)
+	{
+		if (i > 0)
+		{
+			if (j < route.size() - 1)
+			{
+				t1 = mergeT(0, i - 1, i + 1, j);
+				t2 = mergeT(i, i, j + 1, route.size() - 1);
+				w1 = mergeW(0, i - 1, i + 1, j);
+				w2 = mergeW(i, i, j + 1, route.size() - 1);
+				c1 = mergeC(0, i - 1, i + 1, j);
+				c2 = mergeC(i, i, j + 1, route.size() - 1);
+				return (c1 + c2 + w2*(t1 + inst.cost[route[j]][route[i]])) + t1 + t2 + inst.cost[route[j]][route[i]] + inst.cost[route[route.size() - 1]][0];
+			}
+			else
+			{
+				t1 = T[0][route[i - 1]] + inst.cost[route[i - 1]][route[i + 1]] + T[route[i + 1]][route[j]];
+				t2 = T[route[i]][route[i]];
+				w1 = W[0][route[i - 1]] + W[route[i + 1]][route[j]];
+				w2 = W[route[i]][route[i]];
+				c1 = C[0][route[i - 1]] + W[route[i + 1]][route[j]] * (T[0][route[i - 1]] + inst.cost[route[i - 1]][route[i + 1]]) + C[route[i + 1]][route[j]];
+				c2 = C[route[i]][route[i]];
+			}
+		}
+		else
+		{
+			if (j < route.size() - 1)
+			{
+				t1 = T[route[i + 1]][route[j]];
+				t2 = T[route[i]][route[i]] + inst.cost[route[i]][route[j + 1]] + T[route[j + 1]][route[route.size() - 1]];
+				w1 = W[route[i + 1]][route[j]];
+				w2 = W[route[i]][route[i]] + W[route[j + 1]][route[route.size() - 1]];
+				c1 = C[route[i + 1]][route[j]];
+				c2 = C[route[i]][route[i]] + W[route[j + 1]][route[route.size() - 1]] * (T[route[i]][route[i]] + inst.cost[route[i]][route[j + 1]]) + C[route[j + 1]][route[route.size() - 1]];
+			}
+			else
+			{
+				t1 = T[route[i + 1]][route[j]];
+				t2 = T[route[i]][route[i]];
+				w1 = W[route[i + 1]][route[j]];
+				w2 = W[route[i]][route[i]];
+				c1 = C[route[i + 1]][route[j]];
+				c2 = C[route[i]][route[i]];
+			}
+		}
+	}
+	return 0;
+}
+int Solution::costSwapTwo(int i, int j)
+{
+
+	return 0;
+}
+int Solution::costSwapAdjacent(int i)
+{
+	return 0;
+}
+int Solution::costTwoOpt(int i, int j)
+{
+	return 0;
+}
+int Solution::costOrOpt(int i, int j, int k)
+{
+	return 0;
+}
+
 void Solution::setRouteNode(int i, int j)
 {
 	route.push_back(j);
