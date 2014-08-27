@@ -43,19 +43,19 @@ void Test::run()
 
 	
 	Algorithms::greedySolution(vns.sol);
-	writer.out << "start total cost: " << vns.sol.totalCost() << endl;
+	//writer.out << "start total cost: " << vns.sol.totalCost() << endl;
 	//writer.writeRoute(vns.sol, inst);
 
 	vns.sol.reoptimizeDataStructures();
-	writer.out << "start smart cost: " << (vns.sol.C[0][vns.sol.route.size() - 1] + vns.sol.T[0][vns.sol.route[vns.sol.route.size() - 1]] + vns.sol.inst.cost[vns.sol.route[vns.sol.route.size() - 1]][0]) << endl;
+	//writer.out << "start smart cost: " << (vns.sol.C[0][vns.sol.route.size() - 1] + vns.sol.T[0][vns.sol.route[vns.sol.route.size() - 1]] + vns.sol.inst.cost[vns.sol.route[vns.sol.route.size() - 1]][0]) << endl;
 	//vns.run();
 	//writer.out << "removeInsert - 1, 8" << endl;
 	//
-	vns.sol.cost = vns.sol.costRemoveInsert(1, 8);
+	vns.sol.cost = vns.sol.costRemoveInsert(16, 2);
 	writer.out << "rmIns smart cost: " << vns.sol.cost << endl;
 	//writer.writeRoute(vns.sol, inst);
 
-	vns.sol.removeInsert(1, 8);
+	vns.sol.removeInsert(16, 2);
 	//writer.writeRoute(vns.sol, inst);
 	writer.out << endl << "totalcost after rmIns: " << vns.sol.totalCost() << endl;
 	//vns.sol.removeInsert(8, 0);
@@ -65,7 +65,7 @@ void Test::run()
 
 
 	//writer.writeRoute(vns.sol,inst);
-	//writer.out << "time: " << ((float)(clock() - t)) / CLOCKS_PER_SEC;
+	writer.out << "time: " << ((float)(clock() - t)) / CLOCKS_PER_SEC;
 	
 
 	/*writer.out << "swapAdjacent - 0" << endl;

@@ -81,6 +81,7 @@
     <ClCompile Include="ILS.cpp" />
     <ClCompile Include="Instance.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Part.cpp" />
     <ClCompile Include="Reader.cpp" />
     <ClCompile Include="Solution.cpp" />
     <ClCompile Include="Test.cpp" />
@@ -93,6 +94,7 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="ILS.h" />
     <ClInclude Include="Instance.h" />
+    <ClInclude Include="Part.h" />
     <ClInclude Include="Reader.h" />
     <ClInclude Include="Solution.h" />
     <ClInclude Include="Test.h" />
