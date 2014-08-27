@@ -92,12 +92,12 @@ void VNS::VND()
 		else
 		{
 			kVND++;
-			//ostaje isto resenje ?
-			// ?
+			sol.cost = bestCost;
+			sol.route = vector<int>(bestRoute);
 		}
 	}
-	sol.cost = bestCost;
-	sol.route = vector<int>(bestRoute);
+	//sol.cost = bestCost;
+	//sol.route = vector<int>(bestRoute);
 }
 
 void VNS::swapTwoNeighborhoodSearch(bool fix)
