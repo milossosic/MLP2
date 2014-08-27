@@ -24,15 +24,14 @@ void Test::run()
 
 	Config conf;
 	Writer writer(conf);
-	conf.fIn = "instances/gr17.xml"; 
-	//conf.fIn = "instances/dantzig42.xml";
+	//conf.fIn = "instances/gr17.xml"; 
+	conf.fIn = "instances/dantzig42.xml";
 	//conf.fIn = "instances/swiss42.xml";
 	//conf.fIn = "instances/gr48.xml"; 
 	//conf.fIn = "instances/att48.xml";
 	//conf.fIn = "instances/hk48.xml";
 	//conf.fIn = "instances/eil51.xml";
 	//conf.fIn = "instances/berlin52.xml";
-	
 	//conf.fIn = "instances/st70.xml";
 	Reader reader(conf);
 	Instance inst;
@@ -43,28 +42,28 @@ void Test::run()
 
 	
 	Algorithms::greedySolution(vns.sol);
-	//writer.out << "start total cost: " << vns.sol.totalCost() << endl;
-	//writer.writeRoute(vns.sol, inst);
+
 
 	vns.sol.reoptimizeDataStructures();
-	//writer.out << "start smart cost: " << (vns.sol.C[0][vns.sol.route.size() - 1] + vns.sol.T[0][vns.sol.route[vns.sol.route.size() - 1]] + vns.sol.inst.cost[vns.sol.route[vns.sol.route.size() - 1]][0]) << endl;
-	//vns.run();
-	//writer.out << "removeInsert - 1, 8" << endl;
-	//
-	vns.sol.cost = vns.sol.costRemoveInsert(16, 2);
-	writer.out << "rmIns smart cost: " << vns.sol.cost << endl;
-	//writer.writeRoute(vns.sol, inst);
 
-	vns.sol.removeInsert(16, 2);
-	//writer.writeRoute(vns.sol, inst);
-	writer.out << endl << "totalcost after rmIns: " << vns.sol.totalCost() << endl;
-	//vns.sol.removeInsert(8, 0);
-	//vns.sol.cost = vns.sol.costRemoveInsert(8, 0);
-	//writer.writeRoute(vns.sol, inst);
+	/*writer.out << "smart cost rmIns 1, 2: " << vns.sol.costRemoveInsert(1,2)<< endl;
+
+	vns.sol.removeInsert(1, 2);
+	writer.out << "real cost rmIns       : " << vns.sol.totalCost() << endl;
+*/
+	
+	vns.run();
+	
+	
+	
+	
+	//writer.out << "rmIns smart cost: " << vns.sol.cost << endl;	
+	//writer.out << endl << "totalcost after rmIns: " << vns.sol.totalCost() << endl;
+	
 
 
 
-	//writer.writeRoute(vns.sol,inst);
+	writer.writeRoute(vns.sol,inst);
 	writer.out << "time: " << ((float)(clock() - t)) / CLOCKS_PER_SEC;
 	
 

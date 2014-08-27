@@ -59,4 +59,5 @@ void Algorithms::greedySolution(Solution & s)
 			}
 		}
 	}
+	s.totalCost();
 }

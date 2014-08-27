@@ -117,7 +117,10 @@ int Solution::costRemoveInsert(int i, int j)
 }
 int Solution::costSwapTwo(int i, int j)
 {
+	if (i > j)
+	{
 
+	}
 	return 0;
 }
 int Solution::costSwapAdjacent(int i)
