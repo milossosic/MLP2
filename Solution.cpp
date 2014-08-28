@@ -178,6 +178,22 @@ double Solution::totalCost()
 	cost = totalCost+inst.cost[route.back()][0];
 	return cost;
 }
+double Solution::totalCostWithoutLast()
+{
+	double totalCost = 0;
+	int dim = route.size()-1;
+	//totalCost = dim-- * inst.cost[0][route.front()];
+
+	for (auto itPrev = route.begin(), itNext = itPrev; ++itNext != route.end();)
+	{
+		//itNext++;
+		///offset += inst.cost[*itPrev][*(itNext)];
+		totalCost += (dim--)  * inst.cost[*itPrev][*(itNext)];
+		itPrev++;
+	}
+	cost = totalCost; //+ inst.cost[route.back()][0];
+	return cost;
+}
 
 
 void Solution::removeInsert(int i, int j)

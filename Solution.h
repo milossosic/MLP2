@@ -31,6 +31,7 @@ public:
 	void setRouteNode(int i, int j);
 	bool nodeFree(int j);
 	double totalCost();
+	double totalCostWithoutLast();
 
 	void removeInsert(int i, int j);
 	void swapTwo(int i, int j);

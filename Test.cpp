@@ -24,10 +24,10 @@ void Test::run()
 
 	Config conf;
 	Writer writer(conf);
-	//conf.fIn = "instances/gr17.xml"; 
+	conf.fIn = "instances/gr17.xml"; 
 
 	//conf.fIn = "instances/dantzig42.xml";
-	conf.fIn = "instances/swiss42.xml";
+	//conf.fIn = "instances/swiss42.xml";
 	//conf.fIn = "instances/gr48.xml"; 
 	//conf.fIn = "instances/att48.xml";
 	//conf.fIn = "instances/hk48.xml";
@@ -38,6 +38,7 @@ void Test::run()
 	//conf.fIn = "instances/pr76.xml"; //+
 	//conf.fIn = "instances/gr96.xml"; //opt
 	//conf.fIn = "instances/rat99.xml";
+	conf.fIn = "instances/kroD100.xml";
 
 	
 	Reader reader(conf);

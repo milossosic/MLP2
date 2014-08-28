@@ -51,7 +51,7 @@ void VNS::neighborhoodSearch()
 		break;
 	case 3: twoOptNeighborhoodSearch(fix);
 		break;
-	case 4: orOptNeighborhoodSearch(fix);
+	case 4: orOptNeighborhoodSearch(true);
 		break;
 	}
 }
@@ -59,7 +59,8 @@ void VNS::neighborhoodSearch()
 void VNS::shake()
 {
 	bool fix;
-	switch (kVNS/*rand(0,5)*/)
+	//switch (kVNS/*rand(0,5)*/)
+	switch (rand(0,5))
 	{
 	case 0: swapAdjacentShake();
 		break;

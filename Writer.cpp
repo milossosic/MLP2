@@ -30,6 +30,7 @@ void Writer::writeCost(Solution & s)
 {
 	//out << this->fin << endl;
 	out << s.cost << endl;
+	out << "cost w/o last: " << s.totalCostWithoutLast() << endl;
 }
 
 void Writer::close()
