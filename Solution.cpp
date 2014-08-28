@@ -56,20 +56,8 @@ void Solution::reoptimizeDataStructures()
 		}
 	}
 }
-int Solution::mergeT(int l1, int r1, int l2, int r2)
-{
-	return T[route[l1]][route[r1]] + inst.cost[route[r1]][route[l2]] + T[route[l2]][route[r2]];
-}
-int Solution::mergeW(int l1, int r1, int l2, int r2)
-{
-	return W[route[l1]][route[r1]] + W[route[l2]][route[r2]];
-}
-int Solution::mergeC(int l1, int r1, int l2, int r2)
-{
-	return C[route[l1]][route[r1]] + W[route[l2]][route[r2]] * (T[route[l1]][route[r1]] + inst.cost[route[r1]][route[l2]]) + C[route[l2]][route[r2]];
-}
 
-int Solution::costRemoveInsert(int i, int j)
+double Solution::costRemoveInsert(int i, int j)
 {
 	if (i < j)
 	{
@@ -99,7 +87,7 @@ int Solution::costRemoveInsert(int i, int j)
 	}
 	return 0;
 }
-int Solution::costSwapTwo(int i, int j)
+double Solution::costSwapTwo(int i, int j)
 {
 	if (i > j)
 	{
@@ -124,7 +112,7 @@ int Solution::costSwapTwo(int i, int j)
 	}
 	return l1.finalCost(*this);
 }
-int Solution::costSwapAdjacent(int i)
+double Solution::costSwapAdjacent(int i)
 {
 	Part l1(*this, 0, i - 1);
 	Part l2(*this, i + 1, i + 1);
@@ -137,11 +125,11 @@ int Solution::costSwapAdjacent(int i)
 	}
 	return l1.finalCost(*this);
 }
-int Solution::costTwoOpt(int i, int j)
+double Solution::costTwoOpt(int i, int j)
 {
 	return 0;
 }
-int Solution::costOrOpt(int i, int j, int k)
+double Solution::costOrOpt(int i, int j, int k)
 {
 	Part l1(*this, 0, i);
 	Part l2(*this, j + 1, k);
@@ -166,32 +154,24 @@ double Solution::totalCost()
 {
 	double totalCost = 0;
 	int dim = route.size();
-	//totalCost = dim-- * inst.cost[0][route.front()];
 	
-	for (auto itPrev = route.begin(), itNext = itPrev; ++itNext!=route.end();)
+	for (int i = 1; i < route.size();i++)
 	{
-		//itNext++;
-		///offset += inst.cost[*itPrev][*(itNext)];
-		totalCost += (dim--)  * inst.cost[*itPrev][*(itNext)];
-		itPrev++;
+		totalCost += (dim--)  * inst.cost[route[i-1]][route[i]];
 	}
-	cost = totalCost+inst.cost[route.back()][0];
+	cost = totalCost+inst.cost[route[route.size()-1]][0];
 	return cost;
 }
 double Solution::totalCostWithoutLast()
 {
 	double totalCost = 0;
 	int dim = route.size()-1;
-	//totalCost = dim-- * inst.cost[0][route.front()];
 
-	for (auto itPrev = route.begin(), itNext = itPrev; ++itNext != route.end();)
+	for (int i = 1; i < route.size(); i++)
 	{
-		//itNext++;
-		///offset += inst.cost[*itPrev][*(itNext)];
-		totalCost += (dim--)  * inst.cost[*itPrev][*(itNext)];
-		itPrev++;
+		totalCost += (dim--)  * inst.cost[route[i - 1]][route[i]];
 	}
-	cost = totalCost; //+ inst.cost[route.back()][0];
+	cost = totalCost;
 	return cost;
 }
 

@@ -23,14 +23,31 @@ void Writer::writeRoute(Solution & s, Instance &inst)
 	for (auto it = s.route.begin(); it != s.route.end(); it++)
 		out << *it << " ";
 	out << endl;
-	out << "cost: " << s.cost << endl;
+	//out << "cost: " << s.cost << endl;
 	//out << "real cost: " << s.totalCost() << endl;
 }
 void Writer::writeCost(Solution & s)
 {
 	//out << this->fin << endl;
-	out << s.cost << endl;
-	out << "cost w/o last: " << s.totalCostWithoutLast() << endl;
+	out << "cost with last: " << s.cost << endl;
+	out << "real cost w.l.: " << s.totalCost() << endl;
+	out << "cost w/o last:  " << s.totalCostWithoutLast() << endl;
+	/*bool in[200];
+	for (int i = 0; i < s.route.size(); i++)
+	{
+		in[i] = false;
+	}
+	for (int i = 0; i < s.route.size(); i++)
+	{
+		in[s.route[i]] = true;
+	}
+	bool flag = true;
+	for (int i = 0; i < s.route.size(); i++)
+	{
+		if (!in[i])
+			flag = false;
+	}
+	out << "all "<< s.route.size() <<" vertices on route: " << (flag?"true":"false") << endl;*/
 }
 
 void Writer::close()

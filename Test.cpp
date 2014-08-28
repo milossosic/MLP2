@@ -24,21 +24,33 @@ void Test::run()
 
 	Config conf;
 	Writer writer(conf);
-	conf.fIn = "instances/gr17.xml"; 
+
+
+	//conf.fIn = "instances/gr17.xml"; 
 
 	//conf.fIn = "instances/dantzig42.xml";
 	//conf.fIn = "instances/swiss42.xml";
-	//conf.fIn = "instances/gr48.xml"; 
 	//conf.fIn = "instances/att48.xml";
+	//conf.fIn = "instances/gr48.xml"; 
 	//conf.fIn = "instances/hk48.xml";
-	//conf.fIn = "instances/eil51.xml"; //dobijam 9.787 resenje
-	//conf.fIn = "instances/berlin52.xml"; // 143.399
-	//conf.fIn = "instances/st70.xml"; // 20.543
-	//conf.fIn = "instances/eil76.xml"; //+
-	//conf.fIn = "instances/pr76.xml"; //+
-	//conf.fIn = "instances/gr96.xml"; //opt
+	//conf.fIn = "instances/eil51.xml"; 
+	//conf.fIn = "instances/berlin52.xml"; 
+	//conf.fIn = "instances/brazil58.xml"; 
+	//conf.fIn = "instances/st70.xml"; 
+	//conf.fIn = "instances/eil76.xml"; 
+	//conf.fIn = "instances/pr76.xml"; 
+
+	conf.fIn = "instances/gr96.xml"; 
 	//conf.fIn = "instances/rat99.xml";
-	conf.fIn = "instances/kroD100.xml";
+	//conf.fIn = "instances/kroA100.xml";
+	//conf.fIn = "instances/kroB100.xml";
+	//conf.fIn = "instances/kroC100.xml";
+	//conf.fIn = "instances/kroD100.xml";
+	//conf.fIn = "instances/kroE100.xml";
+	//conf.fIn = "instances/rd100.xml";
+	//conf.fIn = "instances/eil101.xml";
+	//conf.fIn = "instances/lin105.xml";
+	//conf.fIn = "instances/pr107.xml";
 
 	
 	Reader reader(conf);
@@ -59,7 +71,11 @@ void Test::run()
 	
 	vns.run();
 
+	
+	cout << conf.fIn << endl;
+	cout << vns.sol.cost << endl;
 	writer.out << conf.fIn << endl;
+	//writer.writeRoute(vns.sol,vns.sol.inst);
 	writer.writeCost(vns.sol);
 	writer.out << "time: " << ((float)(clock() - t)) / CLOCKS_PER_SEC;
 

@@ -8,9 +8,9 @@ public:
 	~Part();
 
 	int l, r;
-	int T=-1, W=-1, C=-1;
+	double T=-1, W=-1, C=-1;
 
 	Part & add(Part & a, Solution & s);
-	int finalCost(Solution & s);
+	double finalCost(Solution & s);
 };
 

@@ -26,7 +26,7 @@ Part & Part::add(Part & a, Solution & s)
 	r = a.r;// -a.l + r + 1;
 	return *this;
 }
-int Part::finalCost(Solution & s)
+double Part::finalCost(Solution & s)
 {
 	return C + T + s.inst.cost[s.route[r]][0];
 }
