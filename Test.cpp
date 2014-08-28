@@ -25,14 +25,21 @@ void Test::run()
 	Config conf;
 	Writer writer(conf);
 	//conf.fIn = "instances/gr17.xml"; 
-	conf.fIn = "instances/dantzig42.xml";
-	//conf.fIn = "instances/swiss42.xml";
+
+	//conf.fIn = "instances/dantzig42.xml";
+	conf.fIn = "instances/swiss42.xml";
 	//conf.fIn = "instances/gr48.xml"; 
 	//conf.fIn = "instances/att48.xml";
 	//conf.fIn = "instances/hk48.xml";
-	//conf.fIn = "instances/eil51.xml";
-	//conf.fIn = "instances/berlin52.xml";
-	//conf.fIn = "instances/st70.xml";
+	//conf.fIn = "instances/eil51.xml"; //dobijam 9.787 resenje
+	//conf.fIn = "instances/berlin52.xml"; // 143.399
+	//conf.fIn = "instances/st70.xml"; // 20.543
+	//conf.fIn = "instances/eil76.xml"; //+
+	//conf.fIn = "instances/pr76.xml"; //+
+	//conf.fIn = "instances/gr96.xml"; //opt
+	//conf.fIn = "instances/rat99.xml";
+
+	
 	Reader reader(conf);
 	Instance inst;
 	
@@ -40,81 +47,20 @@ void Test::run()
 
 	VNS vns(inst);
 
-	
-	Algorithms::greedySolution(vns.sol);
 
-
+	/*Algorithms::greedySolution(vns.sol);
 	vns.sol.reoptimizeDataStructures();
+	writer.out << "smart cost swap2 4,5: " << vns.sol.costSwapTwo(4,5)<< endl;
 
-	/*writer.out << "smart cost rmIns 1, 2: " << vns.sol.costRemoveInsert(1,2)<< endl;
-
-	vns.sol.removeInsert(1, 2);
-	writer.out << "real cost rmIns       : " << vns.sol.totalCost() << endl;
+	vns.sol.swapTwo(4,5);
+	writer.out << "real cost swap2   : " << vns.sol.totalCost() << endl;
 */
 	
 	vns.run();
-	
-	
-	
-	
-	//writer.out << "rmIns smart cost: " << vns.sol.cost << endl;	
-	//writer.out << endl << "totalcost after rmIns: " << vns.sol.totalCost() << endl;
-	
 
-
-
-	writer.writeRoute(vns.sol,inst);
+	writer.out << conf.fIn << endl;
+	writer.writeCost(vns.sol);
 	writer.out << "time: " << ((float)(clock() - t)) / CLOCKS_PER_SEC;
-	
 
-	/*writer.out << "swapAdjacent - 0" << endl;
-	s.swapAdjacent(0);
-	writer.writeRoute(s, inst);
-	s.swapAdjacent(0);
-	writer.writeRoute(s, inst);
-
-	
-	writer.out << "swapTwo - 0, 8" << endl;
-	s.swapTwo(0,8);
-	writer.writeRoute(s, inst);
-	s.swapTwo(0,8);
-	writer.writeRoute(s, inst);
-	/*
-	writer.out << "removeInsert - 0, 8" << endl;
-	s.removeInsert(0,8);
-	writer.writeRoute(s, inst);
-	s.removeInsert(8,0);
-	writer.writeRoute(s, inst);
-
-	writer.out << "twoOpt - 0, 10" << endl;
-	s.twoOpt(0,10);
-	writer.writeRoute(s, inst);
-	s.twoOpt(0,10);
-	writer.writeRoute(s, inst);
-
-	writer.out << "orOpt - 5, 10, 14" << endl;
-	s.orOpt(5,10,14);
-	writer.writeRoute(s, inst);
-	s.orOpt(5, 9, 14);
-	writer.writeRoute(s, inst);
-	
-	for (int i = 1; i < s.route.size()-1;i++)
-	for (int j = i+1; j < s.route.size(); j++)
-	//	for (int k = j + 2; k < s.route.size() - 1; k++)
-	{
-		
-		s.swapTwo(i,j);
-		s.totalCost();
-		writer.writeRoute(s,inst);
-		s.swapTwo(i,j);
-		//s.totalCost();
-		writer.writeRoute(s, inst);
-		writer.out << endl;
-	}*/
-	
-	
-
-	
-	
 	writer.close();
 }

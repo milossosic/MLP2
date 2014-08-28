@@ -73,45 +73,29 @@ int Solution::costRemoveInsert(int i, int j)
 {
 	if (i < j)
 	{
-		
-		if (j < route.size() - 1)
-		{
-			Part l1(*this, 0, i - 1);
-			Part l2(*this, i + 1, j);
-			Part r1(*this, i, i);
-			Part r2(*this, j + 1, route.size() - 1);
-			l1.add(l2, *this).add(r1, *this).add(r2, *this);
-			return l1.finalCost(*this);
-		}
-		else
-		{
 			Part l1(*this, 0, i - 1);
 			Part l2(*this, i + 1, j);
 			Part r1(*this, i, i);
 			l1.add(l2, *this).add(r1, *this);
+			if (j < route.size() - 1)
+			{
+				Part r2(*this, j + 1, route.size() - 1);
+				l1.add(r2, *this);
+			}
 			return l1.finalCost(*this);
-		}
-		
 	}
 	else
 	{
-		if (i < route.size() - 1)
-		{
 			Part l1(*this, 0, j - 1);
 			Part l2(*this, i,i);
 			Part r1(*this, j, i - 1);
-			Part r2(*this, i+1, route.size()-1);
-			l1.add(l2, *this).add(r1, *this).add(r2, *this);
-			return l1.finalCost(*this);
-		}
-		else
-		{
-			Part l1(*this, 0, j - 1);
-			Part l2(*this, i, i);
-			Part r1(*this, j, i - 1);
 			l1.add(l2, *this).add(r1, *this);
+			if (i < route.size() - 1)
+			{
+				Part r2(*this, i + 1, route.size() - 1);
+				l1.add(r2, *this);	
+			}
 			return l1.finalCost(*this);
-		}
 	}
 	return 0;
 }
@@ -119,13 +103,39 @@ int Solution::costSwapTwo(int i, int j)
 {
 	if (i > j)
 	{
-
+		int temp = i;
+		i = j;
+		j = temp;
 	}
-	return 0;
+	Part l1(*this, 0,i-1);
+	Part l2(*this, j, j);
+	l1.add(l2, *this);
+	if (i + 1 < j)
+	{
+		Part r1(*this, i + 1, j - 1);
+		l1.add(r1, *this);
+	}
+	Part r2(*this, i, i);
+	l1.add(r2, *this);
+	if (j < route.size() - 1)
+	{
+		Part r3(*this, j + 1, route.size() - 1);
+		l1.add(r3, *this);
+	}
+	return l1.finalCost(*this);
 }
 int Solution::costSwapAdjacent(int i)
 {
-	return 0;
+	Part l1(*this, 0, i - 1);
+	Part l2(*this, i + 1, i + 1);
+	Part r1(*this, i, i);
+	l1.add(l2, *this).add(r1, *this);
+	if (i + 1 != route.size() - 1)
+	{
+		Part r2(*this, i + 2, route.size() - 1);
+		l1.add(r2, *this);
+	}
+	return l1.finalCost(*this);
 }
 int Solution::costTwoOpt(int i, int j)
 {
@@ -133,7 +143,12 @@ int Solution::costTwoOpt(int i, int j)
 }
 int Solution::costOrOpt(int i, int j, int k)
 {
-	return 0;
+	Part l1(*this, 0, i);
+	Part l2(*this, j + 1, k);
+	Part r1(*this, i + 1, j);
+	Part r2(*this, k + 1, route.size() - 1);
+	l1.add(l2, *this).add(r1, *this).add(r2, *this);
+	return l1.finalCost(*this);
 }
 
 void Solution::setRouteNode(int i, int j)
