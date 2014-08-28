@@ -7,6 +7,7 @@
 #include "ILS.h"
 #include "VNS.h"
 #include <ctime>
+#include <iomanip>
 using namespace std;
 
 Test::Test()
@@ -38,9 +39,9 @@ void Test::run()
 	//conf.fIn = "instances/brazil58.xml"; 
 	//conf.fIn = "instances/st70.xml"; 
 	//conf.fIn = "instances/eil76.xml"; 
-	//conf.fIn = "instances/pr76.xml"; 
+	conf.fIn = "instances/pr76.xml"; 
 
-	conf.fIn = "instances/gr96.xml"; 
+	//conf.fIn = "instances/gr96.xml"; 
 	//conf.fIn = "instances/rat99.xml";
 	//conf.fIn = "instances/kroA100.xml";
 	//conf.fIn = "instances/kroB100.xml";
@@ -73,7 +74,7 @@ void Test::run()
 
 	
 	cout << conf.fIn << endl;
-	cout << vns.sol.cost << endl;
+	cout << std::setprecision(10) << vns.sol.cost << endl;
 	writer.out << conf.fIn << endl;
 	//writer.writeRoute(vns.sol,vns.sol.inst);
 	writer.writeCost(vns.sol);
