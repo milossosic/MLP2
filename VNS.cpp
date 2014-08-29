@@ -88,6 +88,7 @@ void VNS::VND()
 		if (sol.cost < bestCost)
 		{
 			kVND = 0;
+			//sol.totalCost();
 			bestCost = sol.cost;
 			bestRoute = vector<int>(sol.route);
 		}
@@ -377,7 +378,7 @@ void VNS::run()
 		kVNS = 0;
 		while (kVNS < kMax)
 		{
-			//sol.reoptimizeDataStructures();
+			sol.reoptimizeDataStructures();
 			oldRoute = vector<int>(sol.route);
 			//sol.totalCost();
 			oldCost = sol.cost;
@@ -392,6 +393,7 @@ void VNS::run()
 			//decision
 			if (sol.cost < oldCost)
 			{
+				//sol.totalCost();
 				bestCost = sol.cost;
 				bestRoute = vector<int>(sol.route);
 				kVNS = 0;

@@ -22,6 +22,15 @@ Solution::Solution(Instance & inst1)
 		sort(temp.begin(), temp.end(), Algorithms::comparePairBySecond);
 		inst.minCost.push_back(temp);
 	}
+	T = new double *[dim];
+	W = new double *[dim];
+	C = new double *[dim];
+	for (int i = 0; i < dim; i++)
+	{
+		T[i] = new double[dim];
+		W[i] = new double[dim];
+		C[i] = new double[dim];
+	}
 }
 
 Solution::~Solution()

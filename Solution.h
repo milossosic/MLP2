@@ -13,10 +13,12 @@ public:
 	vector<bool> nodesVisited;
 	vector<int> route;
 	double cost;
-	double T[100][100];
+	/*double T[100][100];
 	double C[100][100];
-	double W[100][100];
-
+	double W[100][100];*/
+	double **T;
+	double **C;
+	double **W;
 
 	void reoptimizeDataStructures();
 	double costRemoveInsert(int i, int j);

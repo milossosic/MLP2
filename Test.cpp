@@ -39,7 +39,7 @@ void Test::run()
 	//conf.fIn = "instances/brazil58.xml"; 
 	//conf.fIn = "instances/st70.xml"; 
 	//conf.fIn = "instances/eil76.xml"; 
-	conf.fIn = "instances/pr76.xml"; 
+	//conf.fIn = "instances/pr76.xml"; 
 
 	//conf.fIn = "instances/gr96.xml"; 
 	//conf.fIn = "instances/rat99.xml";
@@ -49,9 +49,15 @@ void Test::run()
 	//conf.fIn = "instances/kroD100.xml";
 	//conf.fIn = "instances/kroE100.xml";
 	//conf.fIn = "instances/rd100.xml";
-	//conf.fIn = "instances/eil101.xml";
+	conf.fIn = "instances/eil101.xml";
 	//conf.fIn = "instances/lin105.xml";
 	//conf.fIn = "instances/pr107.xml";
+
+	//conf.fIn = "instances/rat195.xml";
+	//conf.fIn = "instances/pr226.xml";
+	//conf.fIn = "instances/lin318.xml";
+	//conf.fIn = "instances/pr439.xml";
+	//conf.fIn = "instances/att532.xml";
 
 	
 	Reader reader(conf);
