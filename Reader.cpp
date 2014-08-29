@@ -45,24 +45,26 @@ void Reader::read(Config & c, Instance & inst)
 
 			edge->QueryDoubleAttribute("cost", &cost);
 			edge->QueryIntText(&j);
-			if (i == 0)
+			/*if (i == 0)
 			{
 				temp.push_back(cost);
 			}
-			else
-				inst.cost[i][j] = cost;
+			else*/
+			inst.cost[i][j] = cost;
 		}
-		if (i == 0)
-		{
-			dimFound = true;
-			inst.cost = new double*[j+1];
-			for (int i = 0; i < j+1; i++)
-			{
-				inst.cost[i] = new double[j+1];
-				inst.cost[0][i + 1] = temp[i];
-			}
-			temp.clear();
-		}
+		//if (i == 0)
+		//{
+		//	dimFound = true;
+		//	inst.cost = new double*[j+1];
+		//	/*for (int i = 0; i < j+1; i++)
+		//	{
+		//		inst.cost[i] = new double[j+1];
+		//		if (i == j)
+		//			continue;
+		//		inst.cost[0][i + 1] = temp[i];
+		//	}
+		//	temp.clear();*/
+		//}
 	}
 	inst.dimension = i;
 }

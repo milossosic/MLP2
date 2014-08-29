@@ -13,12 +13,12 @@ public:
 	vector<bool> nodesVisited;
 	vector<int> route;
 	double cost;
-	/*double T[100][100];
-	double C[100][100];
-	double W[100][100];*/
-	double **T;
+	double T[110][110];
+	double C[110][110];
+	int W[110][110];
+	/*double **T;
 	double **C;
-	double **W;
+	int **W;*/
 
 	void reoptimizeDataStructures();
 	double costRemoveInsert(int i, int j);
@@ -39,5 +39,7 @@ public:
 	void orOpt(int i, int j, int k);
 	void orOpt2(int i);
 	void orOpt3(Instance & inst, int i);
+	
+	void doubleBridge(int i, int j, int k);
 };
 

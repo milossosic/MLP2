@@ -20,7 +20,7 @@ public:
 
 	void run();
 
-	void shake();
+	void shake(bool randShakeNeighborhood);
 	void VND();
 
 	void neighborhoodSearch();
@@ -36,5 +36,7 @@ public:
 	void removeInsertShake();
 	void twoOptShake();
 	void orOptShake();
+
+	void doubleBridgeMove();
 };
 

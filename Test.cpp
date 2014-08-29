@@ -34,10 +34,10 @@ void Test::run()
 	//conf.fIn = "instances/att48.xml";
 	//conf.fIn = "instances/gr48.xml"; 
 	//conf.fIn = "instances/hk48.xml";
-	//conf.fIn = "instances/eil51.xml"; 
-	//conf.fIn = "instances/berlin52.xml"; 
+	conf.fIn = "instances/eil51.xml"; //+
+	//conf.fIn = "instances/berlin52.xml"; //+
 	//conf.fIn = "instances/brazil58.xml"; 
-	//conf.fIn = "instances/st70.xml"; 
+	//conf.fIn = "instances/st70.xml"; //+
 	//conf.fIn = "instances/eil76.xml"; 
 	//conf.fIn = "instances/pr76.xml"; 
 

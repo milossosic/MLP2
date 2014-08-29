@@ -9,7 +9,7 @@ public:
 	~Instance();
 
 	int dimension;
-	double  **cost;
+	double  cost[200][200];
 	std::vector < std::vector < std::pair < int, double> > > minCost;
 };
 

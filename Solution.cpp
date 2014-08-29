@@ -22,15 +22,15 @@ Solution::Solution(Instance & inst1)
 		sort(temp.begin(), temp.end(), Algorithms::comparePairBySecond);
 		inst.minCost.push_back(temp);
 	}
-	T = new double *[dim];
-	W = new double *[dim];
+	/*T = new double *[dim];
+	W = new int *[dim];
 	C = new double *[dim];
 	for (int i = 0; i < dim; i++)
 	{
 		T[i] = new double[dim];
-		W[i] = new double[dim];
+		W[i] = new int[dim];
 		C[i] = new double[dim];
-	}
+	}*/
 }
 
 Solution::~Solution()
@@ -247,4 +247,14 @@ void Solution::orOpt(int i, int j, int k)
 		route[t] = temp[s];
 	}
 	temp.clear();
+}
+
+void Solution::doubleBridge(int i, int j, int k)
+{
+	Part p1(*this, 0, i);
+	Part p2(*this, k + 1, route.size() - 1);
+	Part p3(*this, j + 1, k);
+	Part p4(*this, i + 1, j);
+	p1.add(p2, *this).add(p3, *this).add(p4, *this);
+	cost = p1.finalCost(*this);
 }

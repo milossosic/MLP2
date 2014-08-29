@@ -38,78 +38,7 @@ int VNS::rand(int p, int d)
 	return distribution(generator) % (d - p) + p;
 }
 
-void VNS::neighborhoodSearch()
-{
-	bool fix = false;
-	switch (kVND)
-	{
-	case 0: swapAdjacentNeighborhoodSearch(fix);
-		break;
-	case 1: swapTwoNeighborhoodSearch(fix);
-		break;
-	case 2: removeInsertNeighborhoodSearch(fix);
-		break;
-	case 3: twoOptNeighborhoodSearch(fix);
-		break;
-	case 4: orOptNeighborhoodSearch(false);
-		break;
-	}
-}
 
-void VNS::shake()
-{
-	bool fix;
-	//switch (kVNS/*rand(0,5)*/)
-	switch (rand(0,5))
-	{
-	case 0: swapAdjacentShake();
-		break;
-	case 1: swapTwoShake();
-		break;
-	case 2: removeInsertShake();
-		break;
-	case 3: twoOptShake();
-		break;
-	case 4: orOptShake();
-		break;
-	}
-}
-
-void VNS::VND()
-{
-	double bestCost = sol.cost;
-	vector<int> bestRoute = vector<int>(sol.route);
-
-	kVND = 0;
-	while (kVND < kMax)
-	{
-		sol.reoptimizeDataStructures();
-		neighborhoodSearch();
-		if (sol.cost < bestCost)
-		{
-			kVND = 0;
-			//sol.totalCost();
-			bestCost = sol.cost;
-			bestRoute = vector<int>(sol.route);
-		}
-		else
-		{
-			kVND++;
-			sol.cost = bestCost;
-			sol.route = vector<int>(bestRoute);
-		}
-		
-	}
-
-	if (bestCost < sol.cost)
-	{
-		sol.cost = bestCost;
-		sol.route = vector<int>(bestRoute);
-	}
-	/*int x = sol.cost;
-	cout << "cost       :" << x << "total cost: " << sol.totalCost() << endl;
-	sol.cost = x;*/
-}
 
 void VNS::swapTwoNeighborhoodSearch(bool fix)
 {
@@ -364,6 +293,84 @@ void VNS::orOptShake()
 	sol.orOpt(i, j, k);
 }
 
+void VNS::doubleBridgeMove()
+{
+
+	int i, j, k;
+	int q = sol.inst.dimension / 4;
+	i = q + rand(1, q);
+	j = i + 1 + rand(0, q);
+	k = j + 1 + rand(0, q);
+
+	sol.doubleBridge(i,j,k);
+}
+void VNS::neighborhoodSearch()
+{
+	bool fix = false;
+	switch (kVND)
+	{
+	case 0: swapAdjacentNeighborhoodSearch(fix);
+		break;
+	case 1: swapTwoNeighborhoodSearch(fix);
+		break;
+	case 2: removeInsertNeighborhoodSearch(fix);
+		break;
+	case 3: twoOptNeighborhoodSearch(fix);
+		break;
+	case 4: orOptNeighborhoodSearch(fix);
+		break;
+	}
+}
+
+void VNS::shake(bool randShakeNeighborhood)
+{
+	bool fix;
+	switch (randShakeNeighborhood ? rand(0, 5) : kVNS)
+	{
+	case 0: swapAdjacentShake();
+		break;
+	case 1: swapTwoShake();
+		break;
+	case 2: removeInsertShake();
+		break;
+	case 3: twoOptShake();
+		break;
+	case 4: orOptShake();
+		break;
+	}
+}
+
+void VNS::VND()
+{
+	double bestCost = sol.cost;
+	vector<int> bestRoute = vector<int>(sol.route);
+
+	kVND = 0;
+	while (kVND < kMax)
+	{
+		sol.reoptimizeDataStructures();
+		neighborhoodSearch();
+		if (sol.cost < bestCost)
+		{
+			kVND = 0;
+			bestCost = sol.cost;
+			bestRoute = vector<int>(sol.route);
+		}
+		else
+		{
+			kVND++;
+			sol.cost = bestCost;
+			sol.route = vector<int>(bestRoute);
+		}
+
+	}
+
+	if (bestCost < sol.cost)
+	{
+		sol.cost = bestCost;
+		sol.route = vector<int>(bestRoute);
+	}
+}
 void VNS::run()
 {
 	int iter = 0;
@@ -372,6 +379,7 @@ void VNS::run()
 
 	Algorithms::greedySolution(sol);
 
+	bool randShake = true;
 	while (iter++ < MAXIter)
 	{
 		kVNS = 0;
@@ -380,29 +388,32 @@ void VNS::run()
 			sol.reoptimizeDataStructures();
 			oldRoute = vector<int>(sol.route);
 			oldCost = sol.cost;
-
 			//shake
-			shake();
-
 			
+			
+			for (int i = 0; i < 6; i++)
+			{
+				shake(randShake);
+				randShake = !randShake;
+				sol.reoptimizeDataStructures();
+			}
+			//doubleBridgeMove();
 			//vnd
 			VND();
-
+			
 			//decision
 			if (sol.cost < oldCost)
 			{
 				bestCost = sol.cost;
 				bestRoute = vector<int>(sol.route);
-				kVNS = 0;
+  				kVNS = 0;
 			}
 			else
 			{
 				kVNS++;
 				sol.route = oldRoute;
-				sol.cost = oldCost;
-				
+				sol.cost = oldCost;	
 			}
-			
 		}
 	}
 	sol.cost = bestCost;
