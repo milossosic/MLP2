@@ -374,13 +374,11 @@ void VNS::run()
 
 	while (iter++ < MAXIter)
 	{
-		//std::cout << "iter: " << iter << endl;
 		kVNS = 0;
 		while (kVNS < kMax)
 		{
 			sol.reoptimizeDataStructures();
 			oldRoute = vector<int>(sol.route);
-			//sol.totalCost();
 			oldCost = sol.cost;
 
 			//shake
@@ -393,13 +391,9 @@ void VNS::run()
 			//decision
 			if (sol.cost < oldCost)
 			{
-				//sol.totalCost();
 				bestCost = sol.cost;
 				bestRoute = vector<int>(sol.route);
 				kVNS = 0;
-				/*int x = sol.cost;
-				cout << "smartCost:   " << sol.cost << " realCost:    " << sol.totalCost() << endl;
-				sol.cost = x;*/
 			}
 			else
 			{

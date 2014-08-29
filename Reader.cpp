@@ -2,6 +2,7 @@
 #include "Config.h"
 #include "tinyxml2.h"
 #include <iostream>
+#include <vector>
 using namespace tinyxml2;
 Reader::Reader()
 {}
@@ -36,15 +37,32 @@ void Reader::read(Config & c, Instance & inst)
 	int j;
 	int i = 0;
 	bool dimFound = false;
+	vector < double > temp;
 	for (XMLElement *vertex = graph->FirstChildElement("vertex"); vertex; vertex = vertex->NextSiblingElement("vertex"), i++)
 	{
 		for (XMLElement *edge = vertex->FirstChildElement("edge"); edge; edge = edge->NextSiblingElement("edge"))
 		{
+
 			edge->QueryDoubleAttribute("cost", &cost);
 			edge->QueryIntText(&j);
-			inst.cost[i][j] = cost;
+			if (i == 0)
+			{
+				temp.push_back(cost);
+			}
+			else
+				inst.cost[i][j] = cost;
 		}
-		
+		if (i == 0)
+		{
+			dimFound = true;
+			inst.cost = new double*[j+1];
+			for (int i = 0; i < j+1; i++)
+			{
+				inst.cost[i] = new double[j+1];
+				inst.cost[0][i + 1] = temp[i];
+			}
+			temp.clear();
+		}
 	}
 	inst.dimension = i;
 }
