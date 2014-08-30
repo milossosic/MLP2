@@ -5,6 +5,6 @@ public:
 	Test();
 	~Test();
 
-	void run();
+	void run(char * argv);
 };
 

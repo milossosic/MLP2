@@ -8,6 +8,8 @@
 #include "VNS.h"
 #include <ctime>
 #include <iomanip>
+#include <random>
+#include <chrono>
 using namespace std;
 
 Test::Test()
@@ -19,14 +21,18 @@ Test::~Test()
 {
 }
 
-void Test::run()
+void Test::run(char * argv)
 {
 	time_t t = clock();
 
 	Config conf;
+	conf.fIn = string(argv);
 	Writer writer(conf);
 
-
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	std::default_random_engine gen(seed);
+	std::uniform_int_distribution<int> dist(0,3123121);
+	//cout << "rand: " << dist(gen) << endl;
 	//conf.fIn = "instances/gr17.xml"; 
 
 	//conf.fIn = "instances/dantzig42.xml";
@@ -34,7 +40,7 @@ void Test::run()
 	//conf.fIn = "instances/att48.xml";
 	//conf.fIn = "instances/gr48.xml"; 
 	//conf.fIn = "instances/hk48.xml";
-	conf.fIn = "instances/eil51.xml"; //+
+	//conf.fIn = "instances/eil51.xml"; //+
 	//conf.fIn = "instances/berlin52.xml"; //+
 	//conf.fIn = "instances/brazil58.xml"; 
 	//conf.fIn = "instances/st70.xml"; //+
@@ -67,7 +73,7 @@ void Test::run()
 	
 	reader.read(conf, inst);
 
-	VNS vns(inst);
+	VNS vns(inst, gen, dist);
 
 
 	/*Algorithms::greedySolution(vns.sol);
@@ -78,7 +84,9 @@ void Test::run()
 	writer.out << "real cost swap2   : " << vns.sol.totalCost() << endl;
 */
 	
-	vns.run();
+
+	bool randConst = true, rvnd = false;
+	vns.run(randConst, rvnd);
 
 	
 	cout << conf.fIn << endl;
@@ -86,7 +94,7 @@ void Test::run()
 	writer.out << conf.fIn << endl;
 	//writer.writeRoute(vns.sol,vns.sol.inst);
 	writer.writeCost(vns.sol);
-	writer.out << "time: " << ((float)(clock() - t)) / CLOCKS_PER_SEC;
+	writer.out << "time: " << ((float)(clock() - t)) / CLOCKS_PER_SEC << endl << endl;
 
 	writer.close();
 }

@@ -1,12 +1,14 @@
 #pragma once
 #include <vector>
+#include <random>
 #include "Instance.h"
+#include <chrono>
 using namespace std;
 class Solution
 {
 public:
 	Solution();
-	Solution(Instance & inst1);
+	Solution(Instance & inst1, default_random_engine & gen, uniform_int_distribution<int> & dist);
 	~Solution();
 
 	Instance inst;
@@ -19,6 +21,13 @@ public:
 	/*double **T;
 	double **C;
 	int **W;*/
+	
+	std::default_random_engine generator;
+	std::uniform_int_distribution<int> distribution;
+	int rand(int p, int d);
+
+	void greedyConstruct();
+	void greedyRandomConstruct(int alpha);
 
 	void reoptimizeDataStructures();
 	double costRemoveInsert(int i, int j);

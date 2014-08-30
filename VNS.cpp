@@ -10,14 +10,14 @@ VNS::VNS()
 	distribution = d1;
 }
 
-VNS::VNS(Instance & inst)
+VNS::VNS(Instance & inst, default_random_engine & gen, uniform_int_distribution<int> & dist)
 {
+	generator = gen;
+	distribution = dist;
 	MAXIter = 20;
 	kMax = 5;
 	//kMax = 3;
-	std::uniform_int_distribution<int> d1(0, 12312);
-	distribution = d1;
-	sol = *(new Solution(inst));
+	sol = *(new Solution(inst,gen,dist));
 }
 
 VNS::~VNS()
@@ -298,7 +298,7 @@ void VNS::doubleBridgeMove()
 
 	int i, j, k;
 	int q = sol.inst.dimension / 4;
-	i = q + rand(1, q);
+	i = q/2 + rand(1, q);
 	j = i + 1 + rand(0, q);
 	k = j + 1 + rand(0, q);
 
@@ -342,12 +342,15 @@ void VNS::shake(bool randShakeNeighborhood)
 
 void VNS::VND()
 {
-	double bestCost = sol.cost;
-	vector<int> bestRoute = vector<int>(sol.route);
+	double oldCost, bestCost;
+	oldCost = bestCost = sol.cost;
+	vector<int> bestRoute, oldRoute;
+	bestRoute = oldRoute = vector<int>(sol.route);
 
 	kVND = 0;
 	while (kVND < kMax)
 	{
+
 		sol.reoptimizeDataStructures();
 		neighborhoodSearch();
 		if (sol.cost < bestCost)
@@ -371,15 +374,80 @@ void VNS::VND()
 		sol.route = vector<int>(bestRoute);
 	}
 }
-void VNS::run()
+void VNS::RVND()
+{
+	double oldCost, bestCost;
+	oldCost = bestCost = sol.cost;
+	vector<int> bestRoute, oldRoute;
+	bestRoute = oldRoute = vector<int>(sol.route);
+
+	vector<int> neighborhoods;
+	for (int i = 0; i < kMax; i++)
+	{
+		neighborhoods.clear();
+		neighborhoods.push_back(i);
+	}
+	int x;
+
+	
+	while (neighborhoods.size())
+	{
+		kVND = rand(0, neighborhoods.size());
+		 
+		sol.reoptimizeDataStructures();
+		neighborhoodSearch();
+		if (sol.cost < bestCost)
+		{
+			neighborhoods.clear();
+			for (int i = 0; i < kMax; i++)
+			{
+
+				neighborhoods.push_back(i);
+			}
+
+			bestCost = sol.cost;
+			bestRoute = vector<int>(sol.route);
+		}
+		else
+		{
+			for (int i = x; i < neighborhoods.size() - 1; i++)
+			{
+				neighborhoods[x] = neighborhoods[x + 1];
+
+			}
+			neighborhoods.pop_back();
+
+			sol.cost = bestCost;
+			sol.route = vector<int>(bestRoute);
+		}
+
+	}
+
+	if (bestCost < sol.cost)
+	{
+		sol.cost = bestCost;
+		sol.route = vector<int>(bestRoute);
+	}
+}
+void VNS::run(bool randConst, bool rvnd)
 {
 	int iter = 0;
-	double oldCost, bestCost;
-	vector<int> oldRoute,bestRoute;
-
-	Algorithms::greedySolution(sol);
+	double oldCost, bestCost, globalBestCost;
+	vector<int> oldRoute,bestRoute,globalBestRoute;
+	int alpha;
+	if(!randConst)
+		sol.greedyConstruct();
+	else
+	{
+		alpha = sol.inst.dimension / 5;
+		sol.greedyRandomConstruct(alpha);
+	}
+	
+	globalBestCost = sol.cost;
+	globalBestRoute = vector<int>(sol.route);
 
 	bool randShake = true;
+	bool randomVND = false;
 	while (iter++ < MAXIter)
 	{
 		kVNS = 0;
@@ -397,9 +465,17 @@ void VNS::run()
 				randShake = !randShake;
 				sol.reoptimizeDataStructures();
 			}
-			//doubleBridgeMove();
-			//vnd
-			VND();
+			doubleBridgeMove();
+
+			//vnd/rvnd
+			if (rvnd)
+			{
+				RVND();
+			}
+			else
+			{
+				VND();
+			}
 			
 			//decision
 			if (sol.cost < oldCost)
@@ -415,8 +491,15 @@ void VNS::run()
 				sol.cost = oldCost;	
 			}
 		}
+		if (bestCost < globalBestCost)
+		{
+			globalBestCost = bestCost;
+			globalBestRoute = vector<int>(bestRoute);
+		}
+		if (randConst)
+			sol.greedyRandomConstruct(alpha);
 	}
-	sol.cost = bestCost;
-	sol.route = bestRoute;
+	sol.cost = globalBestCost;
+	sol.route = globalBestRoute;
 
 }

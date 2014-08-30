@@ -1,12 +1,13 @@
 #include "Solution.h"
 #include "Algorithms.h"
 #include <algorithm>
+#include <iostream>
 #include "Part.h"
 Solution::Solution()
 {
 }
 
-Solution::Solution(Instance & inst1)
+Solution::Solution(Instance & inst1, default_random_engine & gen, uniform_int_distribution<int> & dist)
 {
 	inst = inst1;
 	int dim = inst.dimension;
@@ -22,6 +23,10 @@ Solution::Solution(Instance & inst1)
 		sort(temp.begin(), temp.end(), Algorithms::comparePairBySecond);
 		inst.minCost.push_back(temp);
 	}
+	
+	generator = gen;
+	distribution = dist;
+
 	/*T = new double *[dim];
 	W = new int *[dim];
 	C = new double *[dim];
@@ -35,6 +40,71 @@ Solution::Solution(Instance & inst1)
 
 Solution::~Solution()
 {
+}
+
+int Solution::rand(int p, int d)
+{
+	return distribution(generator) % (d - p) + p;
+}
+void Solution::greedyConstruct()
+{
+	setRouteNode(0, 0);
+	for (int i = 0; i < inst.dimension; i++)
+	{
+		for (int j = 0; j < inst.dimension; j++)
+		{
+			int t = inst.minCost[i][j].first;
+			if (i == t)
+				continue;
+			if (nodeFree(t))
+			{
+				setRouteNode(i, t);
+				break;
+			}
+		}
+	}
+	totalCost();
+}
+void Solution::greedyRandomConstruct(int alpha)
+{
+	
+	vector<int> temp;
+	int x,r;
+	for (int i = 1; i < inst.dimension; i++)
+	{
+		nodesVisited[i] = false;
+	}
+	route.clear();
+	setRouteNode(0, 0);
+	for (int i = 1; i < inst.dimension; i++)
+	{
+		temp.clear();
+		x = 0;
+		for (int j = 0; j < inst.dimension; j++)
+		{
+			int t = inst.minCost[i][j].first;
+			if (i == t)
+				continue;
+			if (nodeFree(t))
+			{
+				if (x++ < alpha)
+					temp.push_back(t);
+				else
+					break;
+			}
+			
+		}
+		if (temp.size() == 0)
+		{
+			cout << "";
+			int sd = route[i - 1];
+			route[i - 1] = i;
+			temp.push_back(sd);
+		}
+		r = rand(0, temp.size());
+		setRouteNode(i, temp[r]);
+	}
+	totalCost();
 }
 
 void Solution::reoptimizeDataStructures()

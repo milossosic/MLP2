@@ -6,7 +6,7 @@ class VNS
 {
 public:
 	VNS();
-	VNS(Instance & inst);
+	VNS(Instance & inst, default_random_engine & gen, uniform_int_distribution<int> & dist);
 	VNS(Solution & s);
 	~VNS();
 
@@ -18,10 +18,11 @@ public:
 
 	int rand(int p, int d);
 
-	void run();
+	void run(bool randConst, bool rvnd);
 
 	void shake(bool randShakeNeighborhood);
 	void VND();
+	void RVND();
 
 	void neighborhoodSearch();
 	

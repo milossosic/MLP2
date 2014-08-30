@@ -15,6 +15,6 @@ public:
 	static void swapTwo(vector<int> & route, int a, int b);
 	static bool comparePairBySecond(pair<int, double> & a, pair<int, double> & b);
 
-	static void greedySolution(Solution & s);
+	
 };
 

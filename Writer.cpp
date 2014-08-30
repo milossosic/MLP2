@@ -10,7 +10,7 @@ Writer::Writer()
 
 Writer::Writer(Config & c)
 {
-	out.open(c.fOut);
+	out.open(c.fOut,ios_base::app);
 	//out << c.fIn << endl;
 	//fin = *(new string(c.fIn));
 }
@@ -31,7 +31,7 @@ void Writer::writeCost(Solution & s)
 {
 	out << "cost with last: " << std::setprecision(10) << s.cost << endl;
 	out << "real cost w.l.: " << std::setprecision(10) << s.totalCost() << endl;
-	out << "cost w/o last:  " << std::setprecision(10) << s.totalCostWithoutLast() << endl;
+	out << "cost w/o last:  " << std::setprecision(10) << s.totalCostWithoutLast()<<endl;
 }
 
 void Writer::close()
