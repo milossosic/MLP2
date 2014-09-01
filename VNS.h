@@ -18,19 +18,22 @@ public:
 
 	int rand(int p, int d);
 
-	void run(bool randConst, bool rvnd);
+	void generalVNS(bool bestImprovement);
+	void reducedVNS(bool randConst, bool bestImprovement);
+	void basicVNS(bool bestImprovement);
+	void run(bool randConst, bool rvnd, bool bestImprovement);
 
 	void shake(bool randShakeNeighborhood);
-	void VND();
-	void RVND();
+	void VND(bool bestImprovement);
+	void RVND(bool bestImprovement);
 
-	void neighborhoodSearch();
+	void neighborhoodSearch(bool bestImprovement);
 	
-	void swapTwoNeighborhoodSearch(bool fix);
-	void swapAdjacentNeighborhoodSearch(bool fix);
-	void removeInsertNeighborhoodSearch(bool fix);
-	void twoOptNeighborhoodSearch(bool fix);
-	void orOptNeighborhoodSearch(bool fix);
+	void swapTwoNeighborhoodSearch(bool fix, bool bestImprovement);
+	void swapAdjacentNeighborhoodSearch(bool fix, bool bestImprovement);
+	void removeInsertNeighborhoodSearch(bool fix, bool bestImprovement);
+	void twoOptNeighborhoodSearch(bool fix, bool bestImprovement);
+	void orOptNeighborhoodSearch(bool fix, bool bestImprovement);
 
 	void swapTwoShake();
 	void swapAdjacentShake();

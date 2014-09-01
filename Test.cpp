@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <random>
 #include <chrono>
+#include <cmath>
 using namespace std;
 
 Test::Test()
@@ -23,19 +24,17 @@ Test::~Test()
 
 void Test::run(char * argv)
 {
-	time_t t = clock();
+	
 
 	Config conf;
 	conf.fIn = string(argv);
 	Writer writer(conf);
+	
 
-	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-	std::default_random_engine gen(seed);
-	std::uniform_int_distribution<int> dist(0,3123121);
 	//cout << "rand: " << dist(gen) << endl;
 	//conf.fIn = "instances/gr17.xml"; 
 
-	//conf.fIn = "instances/dantzig42.xml";
+	//conf.fIn = "instances/1.dantzig42.xml";
 	//conf.fIn = "instances/swiss42.xml";
 	//conf.fIn = "instances/att48.xml";
 	//conf.fIn = "instances/gr48.xml"; 
@@ -61,40 +60,55 @@ void Test::run(char * argv)
 
 	//conf.fIn = "instances/rat195.xml";
 	//conf.fIn = "instances/pr226.xml";
-	//conf.fIn = "instances/lin318.xml";
-	//conf.fIn = "instances/pr439.xml";
-
-
-	//conf.fIn = "instances/att532.xml"; //ne moze
+	//conf.fIn = "instances/vece/lin318.xml";
+	//conf.fIn = "instances//vece/pr439.xml";
+	//conf.fIn = "instances/vece/att532.xml";
 
 	
 	Reader reader(conf);
 	Instance inst;
-	
 	reader.read(conf, inst);
 
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	std::default_random_engine gen(seed);
+	std::uniform_int_distribution<int> dist(0, 3123121);
+
+	bool randConst = false, rvnd = false;
+	bool bestImprovement = true;
+
+	
 	VNS vns(inst, gen, dist);
-
-
-	/*Algorithms::greedySolution(vns.sol);
-	vns.sol.reoptimizeDataStructures();
-	writer.out << "smart cost swap2 4,5: " << vns.sol.costSwapTwo(4,5)<< endl;
-
-	vns.sol.swapTwo(4,5);
-	writer.out << "real cost swap2   : " << vns.sol.totalCost() << endl;
-*/
+	
+	//double x;
+	//vns.sol.greedyConstruct();
+	//vns.sol.reoptimizeDataStructures();
+	////swapTwo okolina
+	//Solution sol = vns.sol;
+	//double bestCost = sol.cost;
+	//for (int i = 1; i < sol.route.size() - 1; i++)
+	//{
+	//	for (int j = i + 1; j < sol.route.size(); j++)
+	//	{
+	//		if (i == j)
+	//			continue;
+	//		x = sol.costSwapTwo(i,j);
+	//		sol.swapTwo(i,j);
+	//		sol.totalCost();
+	//		//cout << x - sol.cost << " ";
+	//		if (fabs(x - sol.cost) > 0.0001)
+	//		{
+	//			cout << i;// << " " << j << endl;
+	//		}
+	//		sol.swapTwo(i,j);
+	//	}
+	//}
 	
 
-	bool randConst = true, rvnd = false;
-	vns.run(randConst, rvnd);
-
-	
-	cout << conf.fIn << endl;
-	cout << std::setprecision(10) << vns.sol.cost << endl;
-	writer.out << conf.fIn << endl;
-	//writer.writeRoute(vns.sol,vns.sol.inst);
+	time_t t = clock();
+	vns.run(randConst, rvnd, bestImprovement);
+	float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
 	writer.writeCost(vns.sol);
-	writer.out << "time: " << ((float)(clock() - t)) / CLOCKS_PER_SEC << endl << endl;
+	writer.out <<  time1 << endl;
 
 	writer.close();
 }

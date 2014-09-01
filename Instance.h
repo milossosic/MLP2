@@ -6,10 +6,12 @@ class Instance
 {
 public:
 	Instance();
+	//Instance(Instance & inst);
 	~Instance();
 
 	int dimension;
-	double  cost[200][200];
+	//double  cost[550][550];
+	double **cost;
 	std::vector < std::vector < std::pair < int, double> > > minCost;
 };
 

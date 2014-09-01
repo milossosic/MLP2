@@ -15,12 +15,12 @@ public:
 	vector<bool> nodesVisited;
 	vector<int> route;
 	double cost;
-	double T[110][110];
-	double C[110][110];
-	int W[110][110];
-	/*double **T;
+	//double T[110][110];
+	//double C[110][110];
+	//int W[110][110];
+	double **T;
 	double **C;
-	int **W;*/
+	int **W;
 	
 	std::default_random_engine generator;
 	std::uniform_int_distribution<int> distribution;
