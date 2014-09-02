@@ -334,8 +334,9 @@ void VNS::twoOptShake()
 	int i = rand(1, sol.route.size() - 2);
 	int j;
 	j = rand(i + 2, sol.route.size());
+	sol.cost = sol.costTwoOpt(i, j);
 	sol.twoOpt(i, j);
-	sol.totalCost();
+	//sol.totalCost();
 }
 void VNS::orOptShake()
 {

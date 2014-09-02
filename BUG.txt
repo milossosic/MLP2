@@ -1,0 +1,4 @@
+SOlution konstruktor
+-inst dodela
+
+if(bestImprovement)

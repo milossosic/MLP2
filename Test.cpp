@@ -28,6 +28,7 @@ void Test::run(char * argv)
 
 	Config conf;
 	conf.fIn = string(argv);
+	cout << conf.fIn << endl;
 	Writer writer(conf);
 	
 
@@ -69,46 +70,139 @@ void Test::run(char * argv)
 	Instance inst;
 	reader.read(conf, inst);
 
-	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-	std::default_random_engine gen(seed);
-	std::uniform_int_distribution<int> dist(0, 3123121);
+	vector<double> costs;
+	vector<double> times;
+	double avgTime = 0;
+	double minCost, agvTime;
 
-	bool randConst = false, rvnd = false;
-	bool bestImprovement = true;
+	minCost = 100000000;
+	avgTime = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+		std::default_random_engine gen(seed);
+		std::uniform_int_distribution<int> dist(0, 3123121);
 
-	
-	VNS vns(inst, gen, dist);
-	
-	//double x;
-	//vns.sol.greedyConstruct();
-	//vns.sol.reoptimizeDataStructures();
-	////swapTwo okolina
-	//Solution sol = vns.sol;
-	//double bestCost = sol.cost;
-	//for (int i = 1; i < sol.route.size() - 1; i++)
-	//{
-	//	for (int j = i + 1; j < sol.route.size(); j++)
-	//	{
-	//		if (i == j)
-	//			continue;
-	//		x = sol.costSwapTwo(i,j);
-	//		sol.swapTwo(i,j);
-	//		sol.totalCost();
-	//		//cout << x - sol.cost << " ";
-	//		if (fabs(x - sol.cost) > 0.0001)
-	//		{
-	//			cout << i;// << " " << j << endl;
-	//		}
-	//		sol.swapTwo(i,j);
-	//	}
-	//}
-	
+		bool randConst = false, rvnd = false;
+		bool firstImprovement = false;
 
-	time_t t = clock();
-	vns.run(randConst, rvnd, bestImprovement);
-	float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
-	writer.writeCost(vns.sol);
-	writer.out <<  time1 << endl;
+		VNS vns(inst, gen, dist);
+
+		time_t t = clock();
+		vns.run(randConst, rvnd, firstImprovement);
+		float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
+
+		if (vns.sol.cost < minCost)
+			minCost = vns.sol.cost;
+		avgTime += time1;
+
+	}
+
+	avgTime /= 10;
+	writer.out << setprecision(15) << minCost << " " << avgTime << endl;
+
+	minCost = 100000000;
+	avgTime = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+		std::default_random_engine gen(seed);
+		std::uniform_int_distribution<int> dist(0, 3123121);
+
+		bool randConst = false, rvnd = false;
+		bool firstImprovement = true;
+		VNS vns(inst, gen, dist);
+		time_t t = clock();
+		vns.run(randConst, rvnd, firstImprovement);
+		float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
+
+		if (vns.sol.cost < minCost)
+			minCost = vns.sol.cost;
+		avgTime += time1;
+
+	}
+
+	avgTime /= 10;
+	writer.out << setprecision(15) << minCost << " " << avgTime << endl;
+	minCost = 100000000;
+	avgTime = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+		std::default_random_engine gen(seed);
+		std::uniform_int_distribution<int> dist(0, 3123121);
+
+		bool randConst = false, rvnd = true;
+		bool firstImprovement = false;
+
+		VNS vns(inst, gen, dist);
+
+		time_t t = clock();
+		vns.run(randConst, rvnd, firstImprovement);
+		float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
+
+		if (vns.sol.cost < minCost)
+			minCost = vns.sol.cost;
+		avgTime += time1;
+
+	}
+
+	avgTime /= 10;
+	writer.out << setprecision(15) << minCost << " " << avgTime << endl;
+	minCost = 100000000;
+	avgTime = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+		std::default_random_engine gen(seed);
+		std::uniform_int_distribution<int> dist(0, 3123121);
+
+		bool randConst = true, rvnd = false;
+		bool firstImprovement = false;
+
+		VNS vns(inst, gen, dist);
+
+
+		time_t t = clock();
+		vns.run(randConst, rvnd, firstImprovement);
+		float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
+
+		if (vns.sol.cost < minCost)
+			minCost = vns.sol.cost;
+		avgTime += time1;
+
+	}
+
+	avgTime /= 10;
+	writer.out << setprecision(15) << minCost << " " << avgTime << endl;
+	minCost = 100000000;
+	avgTime = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+		std::default_random_engine gen(seed);
+		std::uniform_int_distribution<int> dist(0, 3123121);
+
+		bool randConst = true, rvnd = false;
+		bool firstImprovement = true;
+
+		VNS vns(inst, gen, dist);
+
+		time_t t = clock();
+		vns.run(randConst, rvnd, firstImprovement);
+		float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
+
+		if (vns.sol.cost < minCost)
+			minCost = vns.sol.cost;
+		avgTime += time1;
+
+	}
+
+	avgTime /= 10;
+	writer.out << setprecision(15) << minCost << " " << avgTime << endl;
+
+	//writer.writeCost(vns.sol);
+	//writer.out <<  time1 << endl;
 
 	writer.close();
 }
