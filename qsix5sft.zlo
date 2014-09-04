@@ -341,6 +341,7 @@ void VNS::twoOptShake()
 	j = rand(i + 2, sol.route.size());
 	sol.cost = sol.costTwoOpt(i, j);
 	sol.twoOpt(i, j);
+	//sol.totalCost();
 }
 void VNS::orOptShake()
 {
@@ -349,38 +350,6 @@ void VNS::orOptShake()
 	int k = rand(j + 2, sol.route.size() - 1);
 	sol.cost = sol.costOrOpt(i, j, k);
 	sol.orOpt(i, j, k);
-}
-
-int VNS::swapTwoShake1(int &i, int &j)
-{
-	i = rand(1, sol.route.size());
-	while (i == (j = rand(1, sol.route.size())));
-
-	return sol.costSwapTwo(i, j);
-}
-int VNS::swapAdjacentShake1(int &i)
-{
-	i = rand(1, sol.route.size() - 1);
-	return sol.costSwapAdjacent(i);
-}
-int VNS::removeInsertShake1(int &i, int &j)
-{
-	i = rand(1, sol.route.size());
-	while (i == (j = rand(1, sol.route.size())));
-	return sol.costRemoveInsert(i, j);
-}
-int VNS::twoOptShake1(int &i, int &j)
-{
-	i = rand(1, sol.route.size() - 2);
-	j = rand(i + 2, sol.route.size());
-	return sol.costTwoOpt(i, j);
-}
-int VNS::orOptShake1(int &i, int &j, int &k)
-{
-	i = rand(1, sol.route.size() - 5);
-	j = rand(i + 2, sol.route.size() - 3);
-	k = rand(j + 2, sol.route.size() - 1);
-	return sol.costOrOpt(i, j, k);
 }
 
 void VNS::doubleBridgeMove()
@@ -723,7 +692,7 @@ void VNS::VNS_SA()
 			oldCost = sol.cost;
 
 			//shake
-			//shake(false);
+			shake(false);
 
 			//vnd
 			SA sa;

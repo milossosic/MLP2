@@ -5,9 +5,9 @@
 #include <iostream>
 SA::SA()
 {
-	currentTemp = 3000;
-	coolingRate = 0.999;
-	minTemp = 1;
+	currentTemp = 1500;
+	coolingRate = 0.95;
+	minTemp = 100;
 }
 
 
@@ -26,7 +26,7 @@ void SA::run(VNS & vns)
 	vns.kVND = vns.kVNS;
 	while (currentTemp > minTemp)
 	{
-		for (int it = 0; it < 30; it++)
+		for (int it = 0; it < 8000/currentTemp; it++)
 		{
 			vns.sol.reoptimizeDataStructures();
 
@@ -74,7 +74,7 @@ void SA::run(VNS & vns)
 			}
 		}
 
-		currentTemp -=500;
+		currentTemp *=coolingRate;
 	}
 
 	//vns.sol.route.clear();

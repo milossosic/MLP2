@@ -93,6 +93,8 @@ void Test::runVNS(char * argv, int iter)
 
 		costs.push_back(vns.sol.cost);
 		times.push_back(time1);
+
+		cout << setprecision(10) << vns.sol.cost << " " << setprecision(10) << time1 << endl;
 	}
 
 	calcAll(iter, costs, times);
