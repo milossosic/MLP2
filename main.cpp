@@ -5,7 +5,7 @@ int main(int argc, char* argv[] )
 	Test test;
 
 	
-	test.run(argv[1]);
+	test.runVNS(argv[1],5);
 
 	return 0;
 }

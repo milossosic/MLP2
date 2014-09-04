@@ -6,7 +6,7 @@ class VNS
 {
 public:
 	VNS();
-	VNS(Instance & inst, default_random_engine & gen, uniform_int_distribution<int> & dist);
+	VNS(Instance & inst, default_random_engine & gen, uniform_int_distribution<int> & dist, uniform_real_distribution<double> & distReal);
 	VNS(Solution & s);
 	~VNS();
 
@@ -15,9 +15,12 @@ public:
 	Solution sol;
 	std::default_random_engine generator;
 	std::uniform_int_distribution<int> distribution;
+	std::uniform_real_distribution<double> distributionReal;
 
 	int rand(int p, int d);
+	double randReal();
 
+	void VNS_SA();
 	void generalVNS(bool bestImprovement);
 	void reducedVNS(bool randConst, bool bestImprovement);
 	void basicVNS(bool bestImprovement);
@@ -40,6 +43,12 @@ public:
 	void removeInsertShake();
 	void twoOptShake();
 	void orOptShake();
+
+	int swapTwoShake1(int &i, int &j);
+	int swapAdjacentShake1(int &i);
+	int removeInsertShake1(int &i, int &j);
+	int twoOptShake1(int &i, int &j);
+	int orOptShake1(int &i, int &j, int &k);
 
 	void doubleBridgeMove();
 };

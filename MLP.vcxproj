@@ -82,6 +82,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Part.cpp" />
     <ClCompile Include="Reader.cpp" />
+    <ClCompile Include="SA.cpp" />
     <ClCompile Include="Solution.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
@@ -94,6 +95,7 @@
     <ClInclude Include="Instance.h" />
     <ClInclude Include="Part.h" />
     <ClInclude Include="Reader.h" />
+    <ClInclude Include="SA.h" />
     <ClInclude Include="Solution.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="tinyxml2.h" />

@@ -22,25 +22,25 @@ Test::~Test()
 {
 }
 
-void Test::run(char * argv)
+void Test::runVNS(char * argv, int iter)
 {
 	
 
 	Config conf;
-	conf.fIn = string(argv);
-	cout << conf.fIn << endl;
+	//conf.fIn = string(argv);
+	
 	Writer writer(conf);
 	
 
 	//cout << "rand: " << dist(gen) << endl;
 	//conf.fIn = "instances/gr17.xml"; 
 
-	//conf.fIn = "instances/1.dantzig42.xml";
+	//conf.fIn = "instances/01.dantzig42.xml";
 	//conf.fIn = "instances/swiss42.xml";
 	//conf.fIn = "instances/att48.xml";
 	//conf.fIn = "instances/gr48.xml"; 
 	//conf.fIn = "instances/hk48.xml";
-	//conf.fIn = "instances/eil51.xml"; //+
+	conf.fIn = "instances/06.eil51.xml"; //+
 	//conf.fIn = "instances/berlin52.xml"; //+
 	//conf.fIn = "instances/brazil58.xml"; 
 	//conf.fIn = "instances/st70.xml"; //+
@@ -65,42 +65,39 @@ void Test::run(char * argv)
 	//conf.fIn = "instances//vece/pr439.xml";
 	//conf.fIn = "instances/vece/att532.xml";
 
-	
+	cout << conf.fIn << endl;
+
 	Reader reader(conf);
 	Instance inst;
 	reader.read(conf, inst);
 
 	vector<double> costs;
 	vector<double> times;
-	double avgTime = 0;
-	double minCost, agvTime;
-
-	minCost = 100000000;
-	avgTime = 0;
-	for (int i = 0; i < 10; i++)
+	
+	
+	for (int i = 0; i < iter; i++)
 	{
 		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 		std::default_random_engine gen(seed);
 		std::uniform_int_distribution<int> dist(0, 3123121);
-
+		std::uniform_real_distribution<double> distReal(0.0, 1.0);
 		bool randConst = false, rvnd = false;
 		bool firstImprovement = false;
 
-		VNS vns(inst, gen, dist);
-
+		VNS vns(inst, gen, dist, distReal);
+		//cout << exp(-0.02) << endl;
 		time_t t = clock();
-		vns.run(randConst, rvnd, firstImprovement);
+		//vns.run(randConst, rvnd, firstImprovement);
+		vns.VNS_SA();
 		float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
 
-		if (vns.sol.cost < minCost)
-			minCost = vns.sol.cost;
-		avgTime += time1;
-
+		costs.push_back(vns.sol.cost);
+		times.push_back(time1);
 	}
 
-	avgTime /= 10;
-	writer.out << setprecision(15) << minCost << " " << avgTime << endl;
-
+	calcAll(iter, costs, times);
+	writer.out << setprecision(10) << minCost << " " <<avgCost <<" "<< avgTime << endl;
+	/*
 	minCost = 100000000;
 	avgTime = 0;
 	for (int i = 0; i < 10; i++)
@@ -199,10 +196,28 @@ void Test::run(char * argv)
 	}
 
 	avgTime /= 10;
-	writer.out << setprecision(15) << minCost << " " << avgTime << endl;
+	writer.out << setprecision(15) << minCost << " " << avgTime << endl;*/
 
 	//writer.writeCost(vns.sol);
 	//writer.out <<  time1 << endl;
 
 	writer.close();
+}
+
+void Test::calcAll(int iter, vector<double> & costs, vector<double> & times)
+{
+	minCost = DBL_MAX;
+	double sumCosts = 0, sumTimes = 0;
+	for (int i = 0; i < iter; i++)
+	{
+		if (costs[i] < minCost)
+		{
+			minCost = costs[i];
+		}
+		sumCosts += costs[i];
+		sumTimes += times[i];
+	}
+	avgCost = sumCosts / iter;
+	avgTime = sumTimes / iter;
+
 }

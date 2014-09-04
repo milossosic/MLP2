@@ -1,10 +1,18 @@
 #pragma once
+#include <vector>
+using namespace std;
 class Test
 {
 public:
 	Test();
 	~Test();
 
-	void run(char * argv);
+	double minCost;
+	double avgCost;
+	double avgTime;
+
+
+	void runVNS(char * argv, int iter);
+	void calcAll(int iter, vector<double> & costs, vector<double> & times);
 };
 
