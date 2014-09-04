@@ -5,9 +5,9 @@
 #include <iostream>
 SA::SA()
 {
-	currentTemp = 1500;
-	coolingRate = 0.95;
-	minTemp = 100;
+	/*currentTemp = 500;
+	coolingRate = 0.96;
+	minTemp = 30;*/
 }
 
 
@@ -15,8 +15,18 @@ SA::~SA()
 {
 }
 
+void SA::init(int & _maxTemp, double & cool, int & _minTemp, int & _iter, int & _iterDiv)
+{
+	maxTemp = _maxTemp;
+	coolingRate = cool;
+	minTemp = _minTemp;
+	iter = _iter;
+	iterDiv = _iterDiv;
+}
+
 void SA::run(VNS & vns)
 {
+	currentTemp = maxTemp;
 	vector<int> oldRoute,bestRoute = vector<int>(vns.sol.route);
 	double oldCost,bestCost = vns.sol.cost;
 	double cost;
@@ -26,7 +36,7 @@ void SA::run(VNS & vns)
 	vns.kVND = vns.kVNS;
 	while (currentTemp > minTemp)
 	{
-		for (int it = 0; it < 8000/currentTemp; it++)
+		for (int it = 0; it < iterDiv/currentTemp + iter; it++)
 		{
 			vns.sol.reoptimizeDataStructures();
 

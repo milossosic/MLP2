@@ -701,18 +701,18 @@ void VNS::reducedVNS(bool randConst, bool bestImprovement)
 	sol.route = vector<int>(globalBestRoute);
 
 }
-void VNS::VNS_SA()
+void VNS::VNS_SA(SA & sa)
 {
 	int iter = 0;
 	double oldCost, bestCost, globalBestCost;
 	vector<int> oldRoute, bestRoute, globalBestRoute;
-
+	
 	sol.greedyConstruct();
 
 	globalBestCost = sol.cost;
 	globalBestRoute = vector<int>(sol.route);
 
-
+	
 	while (iter++ < MAXIter)
 	{
 		kVNS = 0;
@@ -726,7 +726,7 @@ void VNS::VNS_SA()
 			//shake(false);
 
 			//vnd
-			SA sa;
+			
 			sa.run(*this);
 
 			//decision

@@ -11,6 +11,7 @@
 #include <random>
 #include <chrono>
 #include <cmath>
+#include "SA.h"
 using namespace std;
 
 Test::Test()
@@ -22,7 +23,7 @@ Test::~Test()
 {
 }
 
-void Test::runVNS(char * argv, int iter)
+void Test::runVNS(char * argv, int iterations)
 {
 	
 
@@ -74,135 +75,63 @@ void Test::runVNS(char * argv, int iter)
 	vector<double> costs;
 	vector<double> times;
 	
+
+	// 0  1000   300    10  0.91 10254 10586 1.870399976
+	// 0   400   300    20  0.97 10297 10760.4 1.108599973
+	SA sa;
+	for (int iter = 0; iter < 11;iter+=5)
+	{
+		for (int iterDiv = 1400; iterDiv >= 400;iterDiv-=200)
+		{
+			for (int maxTemp = 300; maxTemp < 1001;maxTemp+=200)
+			{
+				if (iterDiv <= maxTemp)
+					continue;
+				for (int minTemp = 10; minTemp < 41;minTemp+=10)
+				{
+					for (double cool = 0.75; cool < 1;cool+=0.02)
+					{
+						for (int i = 0; i < iterations; i++)
+						{
+							unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+							std::default_random_engine gen(seed);
+							std::uniform_int_distribution<int> dist(0, 3123121);
+							std::uniform_real_distribution<double> distReal(0.0, 1.0);
+							bool randConst = false, rvnd = false;
+							bool firstImprovement = false;
+
+							VNS vns(inst, gen, dist, distReal);
+							sa.init(maxTemp, cool, minTemp, iter, iterDiv);
+							time_t t = clock();
+							vns.VNS_SA(sa);
+							float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
+
+							costs.push_back(vns.sol.cost);
+							times.push_back(time1);
+
+							cout << setprecision(10) << vns.sol.cost << " " << setprecision(10) << time1 << endl;
+						}
+						calcAll(iterations, costs, times);
+						
+						if (minCost < 10700)
+						{
+							writer.out << setw(5) << iter << " ";
+							writer.out << setw(5) << iterDiv << " ";
+							writer.out << setw(5) << maxTemp << " ";
+							writer.out << setw(5) << minTemp << " ";
+							writer.out << setw(5) << cool << " ";
+							writer.out << setprecision(10) << minCost << " " << avgCost << " " << avgTime << endl;
+						}
+							
+						times.clear();
+						costs.clear();
+					}
+				}
+				
+			}
+		}
+	}
 	
-	for (int i = 0; i < iter; i++)
-	{
-		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-		std::default_random_engine gen(seed);
-		std::uniform_int_distribution<int> dist(0, 3123121);
-		std::uniform_real_distribution<double> distReal(0.0, 1.0);
-		bool randConst = false, rvnd = false;
-		bool firstImprovement = false;
-
-		VNS vns(inst, gen, dist, distReal);
-		//cout << exp(-0.02) << endl;
-		time_t t = clock();
-		//vns.run(randConst, rvnd, firstImprovement);
-		vns.VNS_SA();
-		float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
-
-		costs.push_back(vns.sol.cost);
-		times.push_back(time1);
-
-		cout << setprecision(10) << vns.sol.cost << " " << setprecision(10) << time1 << endl;
-	}
-
-	calcAll(iter, costs, times);
-	writer.out << setprecision(10) << minCost << " " <<avgCost <<" "<< avgTime << endl;
-	/*
-	minCost = 100000000;
-	avgTime = 0;
-	for (int i = 0; i < 10; i++)
-	{
-		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-		std::default_random_engine gen(seed);
-		std::uniform_int_distribution<int> dist(0, 3123121);
-
-		bool randConst = false, rvnd = false;
-		bool firstImprovement = true;
-		VNS vns(inst, gen, dist);
-		time_t t = clock();
-		vns.run(randConst, rvnd, firstImprovement);
-		float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
-
-		if (vns.sol.cost < minCost)
-			minCost = vns.sol.cost;
-		avgTime += time1;
-
-	}
-
-	avgTime /= 10;
-	writer.out << setprecision(15) << minCost << " " << avgTime << endl;
-	minCost = 100000000;
-	avgTime = 0;
-	for (int i = 0; i < 10; i++)
-	{
-		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-		std::default_random_engine gen(seed);
-		std::uniform_int_distribution<int> dist(0, 3123121);
-
-		bool randConst = false, rvnd = true;
-		bool firstImprovement = false;
-
-		VNS vns(inst, gen, dist);
-
-		time_t t = clock();
-		vns.run(randConst, rvnd, firstImprovement);
-		float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
-
-		if (vns.sol.cost < minCost)
-			minCost = vns.sol.cost;
-		avgTime += time1;
-
-	}
-
-	avgTime /= 10;
-	writer.out << setprecision(15) << minCost << " " << avgTime << endl;
-	minCost = 100000000;
-	avgTime = 0;
-	for (int i = 0; i < 10; i++)
-	{
-		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-		std::default_random_engine gen(seed);
-		std::uniform_int_distribution<int> dist(0, 3123121);
-
-		bool randConst = true, rvnd = false;
-		bool firstImprovement = false;
-
-		VNS vns(inst, gen, dist);
-
-
-		time_t t = clock();
-		vns.run(randConst, rvnd, firstImprovement);
-		float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
-
-		if (vns.sol.cost < minCost)
-			minCost = vns.sol.cost;
-		avgTime += time1;
-
-	}
-
-	avgTime /= 10;
-	writer.out << setprecision(15) << minCost << " " << avgTime << endl;
-	minCost = 100000000;
-	avgTime = 0;
-	for (int i = 0; i < 10; i++)
-	{
-		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-		std::default_random_engine gen(seed);
-		std::uniform_int_distribution<int> dist(0, 3123121);
-
-		bool randConst = true, rvnd = false;
-		bool firstImprovement = true;
-
-		VNS vns(inst, gen, dist);
-
-		time_t t = clock();
-		vns.run(randConst, rvnd, firstImprovement);
-		float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
-
-		if (vns.sol.cost < minCost)
-			minCost = vns.sol.cost;
-		avgTime += time1;
-
-	}
-
-	avgTime /= 10;
-	writer.out << setprecision(15) << minCost << " " << avgTime << endl;*/
-
-	//writer.writeCost(vns.sol);
-	//writer.out <<  time1 << endl;
-
 	writer.close();
 }
 

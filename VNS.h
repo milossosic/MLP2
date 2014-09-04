@@ -2,6 +2,8 @@
 #include <random>
 #include "Solution.h"
 #include "Instance.h"
+//#include "SA.h"
+class SA;
 class VNS
 {
 public:
@@ -20,7 +22,7 @@ public:
 	int rand(int p, int d);
 	double randReal();
 
-	void VNS_SA();
+	void VNS_SA(SA & sa);
 	void generalVNS(bool bestImprovement);
 	void reducedVNS(bool randConst, bool bestImprovement);
 	void basicVNS(bool bestImprovement);
