@@ -79,17 +79,17 @@ void Test::runVNS(char * argv, int iterations)
 	// 0  1000   300    10  0.91 10254 10586 1.870399976
 	// 0   400   300    20  0.97 10297 10760.4 1.108599973
 	SA sa;
-	for (int iter = 0; iter < 11;iter+=5)
+	/*for (int iter = 0; iter < 5;iter+=2)
 	{
-		for (int iterDiv = 1400; iterDiv >= 400;iterDiv-=200)
+		for (int iterDiv = 800; iterDiv >= 400;iterDiv-=50)
 		{
-			for (int maxTemp = 300; maxTemp < 1001;maxTemp+=200)
+			for (int maxTemp = 300; maxTemp < 600;maxTemp+=50)
 			{
 				if (iterDiv <= maxTemp)
 					continue;
-				for (int minTemp = 10; minTemp < 41;minTemp+=10)
+				for (int minTemp = 10; minTemp < 21;minTemp+=10)
 				{
-					for (double cool = 0.75; cool < 1;cool+=0.02)
+					for (double cool = 0.8; cool <= .92;cool+=0.02)
 					{
 						for (int i = 0; i < iterations; i++)
 						{
@@ -130,8 +130,47 @@ void Test::runVNS(char * argv, int iterations)
 				
 			}
 		}
-	}
+	}*/
 	
+
+	
+	int sum = 0;
+	for (int i = 1; i < inst.dimension; i++)
+	{
+		sum += inst.cost[0][i];
+	}
+	//cout << "sdfd: "<< sum<< endl;
+	//return;
+	int maxTemp = sum*1.0 / 4;
+	double cool = .91;
+	int minTemp = 20;
+	int iter = 4;
+	int iterDiv = 3.0/6*sum;
+
+	cout << "maxTemp: " << maxTemp << " iterDiv: " << iterDiv << endl;
+	for (int i = 0; i < iterations; i++)
+	{
+		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+		std::default_random_engine gen(seed);
+		std::uniform_int_distribution<int> dist(0, 3123121);
+		std::uniform_real_distribution<double> distReal(0.0, 1.0);
+		bool randConst = false, rvnd = false;
+		bool firstImprovement = false;
+
+		VNS vns(inst, gen, dist, distReal);
+		sa.init(maxTemp, cool, minTemp, iter, iterDiv);
+		time_t t = clock();
+		vns.VNS_SA(sa);
+		float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
+
+		costs.push_back(vns.sol.cost);
+		times.push_back(time1);
+
+		cout << setprecision(10) << vns.sol.cost << " " << setprecision(10) << time1 << endl;
+	}
+	calcAll(iterations, costs, times);
+
+
 	writer.close();
 }
 
