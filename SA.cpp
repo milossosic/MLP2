@@ -57,12 +57,6 @@ void SA::run(VNS & vns)
 			delta = cost - oldCost;
 			if (delta<0 || (delta > 0 && (vns.randReal() < exp(-delta / currentTemp))))
 			{
-				/*r = vns.randReal();
-				prob = exp(-delta / currentTemp);
-				if (r < prob)
-				{
-
-				}*/
 				switch (vns.kVNS)
 				{
 				case 0: vns.sol.swapAdjacent(i); vns.sol.cost = cost;

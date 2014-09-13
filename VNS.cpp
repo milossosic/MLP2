@@ -712,7 +712,8 @@ void VNS::VNS_SA(SA & sa)
 	globalBestCost = sol.cost;
 	globalBestRoute = vector<int>(sol.route);
 
-	
+	bool randShake = false;
+	int iterSameSol = 0;
 	while (iter++ < MAXIter)
 	{
 		kVNS = 0;
@@ -723,21 +724,46 @@ void VNS::VNS_SA(SA & sa)
 			oldCost = sol.cost;
 
 			//shake
-			//shake(false);
+			for (int i = 0; i < 6; i++)
+			{
+				shake(randShake);
+				randShake = !randShake;
+				sol.reoptimizeDataStructures();
+			}
 
 			//vnd
+			if (iterSameSol >= 50)
+			{
+				if ((iterSameSol ) % 10 < 7)
+				{
+					sa.run(*this);
+					//cout << "s";
+				}
+				else
+				{
+					VND(true);
+					//cout << "V";
+				}
+				
+			}
+			else
+			{
+				VND(false);
+				//cout << "v";
+			}
 			
-			sa.run(*this);
 
 			//decision
 			if (sol.cost < oldCost)
 			{
+				iterSameSol = 0;
 				bestCost = sol.cost;
 				bestRoute = vector<int>(sol.route);
 				kVNS = 0;
 			}
 			else
 			{
+				iterSameSol++;
 				kVNS++;
 				sol.route = oldRoute;
 				sol.cost = oldCost;
