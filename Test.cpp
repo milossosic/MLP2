@@ -28,7 +28,7 @@ void Test::runVNS(char * argv, int iterations)
 	
 
 	Config conf;
-	//conf.fIn = string(argv);
+	conf.fIn = string(argv);
 	
 	Writer writer(conf);
 	
@@ -66,7 +66,7 @@ void Test::runVNS(char * argv, int iterations)
 	//conf.fIn = "instances//vece/pr439.xml";
 	//conf.fIn = "instances/vece/att532.xml";
 
-	conf.fIn = "instances/random\/TRP-S200-R1.xml";
+	//conf.fIn = "instances/random\/TRP-S200-R1.xml";
 	//conf.fIn = "instances/random\/TRP-S10-R1.xml";
 
 	cout << conf.fIn << endl;
@@ -177,7 +177,7 @@ void Test::runVNS(char * argv, int iterations)
 		costs.push_back(vns.sol.cost);
 		times.push_back(time1);
 
-		cout << setprecision(10) << vns.sol.cost << " " << setprecision(10) << time1 << endl;
+		//cout << setprecision(10) << vns.sol.cost << " " << setprecision(10) << time1 << endl;
 		
 		/*for (int i = 0; i < inst.dimension; i++)
 		{
@@ -186,8 +186,8 @@ void Test::runVNS(char * argv, int iterations)
 		cout << endl;*/
 	}
 	calcAll(iterations, costs, times);
-	cout << "------------------------------------------------------" << endl;
-	cout << minCost << " " << avgCost << " " << avgTime << endl;
+	//cout << "------------------------------------------------------" << endl;
+	//cout << minCost << " " << avgCost << " " << avgTime << endl;
 	writer.out << minCost << " " << avgCost << " " << avgTime << endl;
 	writer.close();
 
