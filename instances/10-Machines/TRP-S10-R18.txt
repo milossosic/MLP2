@@ -1,0 +1,17 @@
+Traveling Repairman Problem (TRP) Instances based on uniform distribution. Designed by Amir Salehipour, University of Antwerp, 2006.
+Number-of-machines: 10
+Lowest range: 0
+Highest range: 100
+
+No.	x-Coor	y-Coor
+0	37	40
+1	92	16
+2	79	14
+3	0	9
+4	7	19
+5	80	16
+6	59	2
+7	48	53
+8	50	69
+9	89	15
+10	76	34
