@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<TSP_raw_instance>
+<dim>10</dim>
+	<coordinates x="61" y="0"></coordinates>
+	<coordinates x="72" y="18"></coordinates>
+	<coordinates x="75" y="40"></coordinates>
+	<coordinates x="21" y="42"></coordinates>
+	<coordinates x="65" y="42"></coordinates>
+	<coordinates x="13" y="35"></coordinates>
+	<coordinates x="85" y="59"></coordinates>
+	<coordinates x="90" y="20"></coordinates>
+	<coordinates x="69" y="42"></coordinates>
+	<coordinates x="5" y="76"></coordinates>
+	<coordinates x="7" y="61"></coordinates>
+</TSP_raw_instance>
