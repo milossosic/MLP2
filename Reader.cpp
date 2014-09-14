@@ -47,17 +47,17 @@ void Reader::read(Config & c, Instance & inst)
 			i++;
 		dim = i;
 		i = 0;
-		inst.cost = new double*[dim];
+		inst.cost = new long*[dim];
 		for (XMLElement *vertex = graph->FirstChildElement("vertex"); vertex; vertex = vertex->NextSiblingElement("vertex"), i++)
 		{
-			inst.cost[i] = new double[dim];
+			inst.cost[i] = new long[dim];
 			for (XMLElement *edge = vertex->FirstChildElement("edge"); edge; edge = edge->NextSiblingElement("edge"))
 			{
 
 				edge->QueryDoubleAttribute("cost", &cost);
 				edge->QueryIntText(&j);
 
-				inst.cost[i][j] = cost;
+				inst.cost[i][j] = (cost+0.5);
 			}
 		}
 		for (int i = 0; i < dim; i++)
@@ -78,11 +78,11 @@ void Reader::read(Config & c, Instance & inst)
 			{
 				vertex->QueryIntText(&inst.dimension);
 				coords.resize(dim=++inst.dimension);
-				inst.cost = new double*[dim];
+				inst.cost = new long*[dim];
 			}
 			else
 			{
-				inst.cost[i-1] = new double[dim];
+				inst.cost[i-1] = new long[dim];
 				vertex->QueryIntAttribute("x", &x);
 				vertex->QueryIntAttribute("y", &y);
 				coords[i-1] = make_pair(x, y);
@@ -99,7 +99,7 @@ void Reader::read(Config & c, Instance & inst)
 					continue;
 				}
 				else
-					inst.cost[i][j] = sqrt(pow(coords[i].first - coords[j].first, 2) + pow(coords[i].second - coords[j].second, 2));
+					inst.cost[i][j] = (long) (sqrt(pow(coords[i].first - coords[j].first, 2) + pow(coords[i].second - coords[j].second, 2)));
 			}
 		}
 	}

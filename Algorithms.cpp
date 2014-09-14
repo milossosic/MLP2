@@ -37,7 +37,7 @@ void Algorithms::swapTwo(vector<int> & route, int a, int b)
 	route[b] = temp;
 }
 
-bool Algorithms::comparePairBySecond(pair<int, double> & a, pair<int, double> & b)
+bool Algorithms::comparePairBySecond(pair<int, long> & a, pair<int, long> & b)
 {
 	return a.second < b.second;
 }

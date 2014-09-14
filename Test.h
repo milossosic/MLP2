@@ -13,6 +13,6 @@ public:
 
 
 	void runVNS(char * argv, int iter);
-	void calcAll(int iter, vector<double> & costs, vector<double> & times);
+	void calcAll(int iter, vector<long> & costs, vector<double> & times);
 };
 

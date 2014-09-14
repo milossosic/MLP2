@@ -29,7 +29,7 @@ Part & Part::add(Part & a, Solution & s)
 	r = a.r;// -a.l + r + 1;
 	return *this;
 }
-double Part::finalCost(Solution & s, bool withoutLast)
+long Part::finalCost(Solution & s, bool withoutLast)
 {
 	if (withoutLast==false)
 	{

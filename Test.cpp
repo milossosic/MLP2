@@ -33,40 +33,11 @@ void Test::runVNS(char * argv, int iterations)
 	Writer writer(conf);
 	
 
-	//cout << "rand: " << dist(gen) << endl;
-	//conf.fIn = "instances/gr17.xml"; 
-
-	//conf.fIn = "instances/01.dantzig42.xml";
-	//conf.fIn = "instances/swiss42.xml";
-	//conf.fIn = "instances/att48.xml";
-	//conf.fIn = "instances/gr48.xml"; 
-	//conf.fIn = "instances/hk48.xml";
-	//conf.fIn = "instances/06.eil51.xml"; //+
-	//conf.fIn = "instances/berlin52.xml"; //+
-	//conf.fIn = "instances/brazil58.xml"; 
-	//conf.fIn = "instances/09.st70.xml"; //+
-	//conf.fIn = "instances/eil76.xml"; 
-	//conf.fIn = "instances/pr76.xml"; 
-
-	//conf.fIn = "instances/gr96.xml"; 
 	//conf.fIn = "instances/14.rat99.xml";
-	//conf.fIn = "instances/15.kroA100.xml";
-	//conf.fIn = "instances/kroB100.xml";
-	//conf.fIn = "instances/kroC100.xml";
-	//conf.fIn = "instances/kroD100.xml";
-	//conf.fIn = "instances/kroE100.xml";
-	//conf.fIn = "instances/rd100.xml";
-	//conf.fIn = "instances/eil101.xml";
-	//conf.fIn = "instances/lin105.xml";
-	//conf.fIn = "instances/pr107.xml";
+	//conf.fIn = "instances/09.st70.xml";
+	//conf.fIn = "instances/18.kroD100.xml";
 
-	//conf.fIn = "instances/rat195.xml";
-	//conf.fIn = "instances/pr226.xml";
-	//conf.fIn = "instances/vece/lin318.xml";
-	//conf.fIn = "instances//vece/pr439.xml";
-	//conf.fIn = "instances/vece/att532.xml";
-
-	//conf.fIn = "instances/random\/TRP-S200-R1.xml";
+	//conf.fIn = "instances/random\/TRP-S200-R01.xml";
 	//conf.fIn = "instances/random\/TRP-S10-R1.xml";
 
 	cout << conf.fIn << endl;
@@ -75,7 +46,7 @@ void Test::runVNS(char * argv, int iterations)
 	Instance inst;
 	reader.read(conf, inst);
 
-	vector<double> costs;
+	vector<long> costs;
 	vector<double> times;
 	
 
@@ -178,27 +149,22 @@ void Test::runVNS(char * argv, int iterations)
 		times.push_back(time1);
 
 		//cout << setprecision(10) << vns.sol.cost << " " << setprecision(10) << time1 << endl;
-		
-		/*for (int i = 0; i < inst.dimension; i++)
-		{
-			cout << vns.sol.route[i] << " ";
-		}
-		cout << endl;*/
 	}
 	calcAll(iterations, costs, times);
 	//cout << "------------------------------------------------------" << endl;
-	//cout << minCost << " " << avgCost << " " << avgTime << endl;
-	writer.out << minCost << " " << avgCost << " " << avgTime << endl;
+	cout << setprecision(10) << minCost << " " << setprecision(10) << avgCost << " " << avgTime << endl;
+	writer.out << setprecision(10) << minCost << " " << setprecision(10) << avgCost << " " << avgTime << endl;
 	writer.close();
 
 	//getchar(); getchar();
 }
 
-void Test::calcAll(int iter, vector<double> & costs, vector<double> & times)
+void Test::calcAll(int iter, vector<long> & costs, vector<double> & times)
 {
 	minCost = DBL_MAX;
 	
-	double sumCosts = 0, sumTimes = 0;
+	double sumCosts = 0;
+	double sumTimes = 0;
 	for (int i = 0; i < iter; i++)
 	{
 		if (costs[i] < minCost)

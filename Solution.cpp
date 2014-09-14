@@ -16,7 +16,7 @@ Solution::Solution(Instance & inst1, default_random_engine & gen, uniform_int_di
 	nodesVisited[0] = true;
 	for (int i = 0; i < dim; i++)
 	{
-		vector<pair<int, double>> temp;
+		vector<pair<int, long>> temp;
 		for (int j = 0; j < dim; j++)
 		{
 			temp.push_back(make_pair(j, inst.cost[i][j]));
@@ -28,14 +28,14 @@ Solution::Solution(Instance & inst1, default_random_engine & gen, uniform_int_di
 	generator = gen;
 	distribution = dist;
 
-	T = new double *[dim];
+	T = new long *[dim];
 	W = new int *[dim];
-	C = new double *[dim];
+	C = new long *[dim];
 	for (int i = 0; i < dim; i++)
 	{
-		T[i] = new double[dim];
+		T[i] = new long[dim];
 		W[i] = new int[dim];
-		C[i] = new double[dim];
+		C[i] = new long[dim];
 	}
 }
 
@@ -151,7 +151,7 @@ void Solution::reoptimizeDataStructures()
 	}
 }
 
-double Solution::costRemoveInsert(int i, int j)
+long Solution::costRemoveInsert(int i, int j)
 {
 	if (i < j)
 	{
@@ -181,7 +181,7 @@ double Solution::costRemoveInsert(int i, int j)
 	}
 	return 0;
 }
-double Solution::costSwapTwo(int i, int j)
+long Solution::costSwapTwo(int i, int j)
 {
 	if (i > j)
 	{
@@ -206,7 +206,7 @@ double Solution::costSwapTwo(int i, int j)
 	}
 	return l1.finalCost(*this, withoutLast);
 }
-double Solution::costSwapAdjacent(int i)
+long Solution::costSwapAdjacent(int i)
 {
 	Part l1(*this, 0, i - 1);
 	Part l2(*this, i + 1, i + 1);
@@ -219,7 +219,7 @@ double Solution::costSwapAdjacent(int i)
 	}
 	return l1.finalCost(*this, withoutLast);
 }
-double Solution::costTwoOpt(int i, int j)
+long Solution::costTwoOpt(int i, int j)
 {
 	Part l1(*this, 0, i);
 	Part l2(*this, j, i+1);
@@ -233,7 +233,7 @@ double Solution::costTwoOpt(int i, int j)
 	
 	return l1.finalCost(*this, withoutLast);
 }
-double Solution::costOrOpt(int i, int j, int k)
+long Solution::costOrOpt(int i, int j, int k)
 {
 	Part l1(*this, 0, i);
 	Part l2(*this, j + 1, k);
@@ -254,9 +254,9 @@ bool Solution::nodeFree(int j)
 	return !nodesVisited[j];
 }
 
-double Solution::totalCost()
+long Solution::totalCost()
 {
-	/*double totalCost = 0;
+	double totalCost = 0;
 	int dim = route.size();
 	
 	for (int i = 1; i < route.size();i++)
@@ -264,18 +264,9 @@ double Solution::totalCost()
 		totalCost += ((double)dim--)  * inst.cost[route[i - 1]][route[i]];
 	}
 	cost = totalCost+inst.cost[route[route.size()-1]][0];
-	return cost;*/
-	double totalCost = 0;
-	int dim = route.size() - 1;
-
-	for (int i = 1; i < route.size(); i++)
-	{
-		totalCost += ((double)dim--)  * inst.cost[route[i - 1]][route[i]];
-	}
-	cost = totalCost;
 	return cost;
 }
-double Solution::totalCostWithoutLast()
+long Solution::totalCostWithoutLast()
 {
 	double totalCost = 0;
 	int dim = route.size()-1;

@@ -11,7 +11,7 @@ public:
 
 	int dimension;
 	//double  cost[550][550];
-	double **cost;
-	std::vector < std::vector < std::pair < int, double> > > minCost;
+	long **cost;
+	std::vector < std::vector < std::pair < int, long> > > minCost;
 };
 

@@ -18,8 +18,8 @@ public:
 	//double T[110][110];
 	//double C[110][110];
 	//int W[110][110];
-	double **T;
-	double **C;
+	long **T;
+	long **C;
 	int **W;
 	
 	bool withoutLast;
@@ -32,16 +32,16 @@ public:
 	void greedyRandomConstruct(int alpha);
 
 	void reoptimizeDataStructures();
-	double costRemoveInsert(int i, int j);
-	double costSwapTwo(int i, int j);
-	double costSwapAdjacent(int i);
-	double costTwoOpt(int i, int j);
-	double costOrOpt(int i, int j, int k);
+	long costRemoveInsert(int i, int j);
+	long costSwapTwo(int i, int j);
+	long costSwapAdjacent(int i);
+	long costTwoOpt(int i, int j);
+	long costOrOpt(int i, int j, int k);
 
 	void setRouteNode(int i, int j);
 	bool nodeFree(int j);
-	double totalCost();
-	double totalCostWithoutLast();
+	long totalCost();
+	long totalCostWithoutLast();
 
 	void removeInsert(int i, int j);
 	void swapTwo(int i, int j);
