@@ -8,7 +8,7 @@ class VNS
 {
 public:
 	VNS();
-	VNS(Instance & inst, default_random_engine & gen, uniform_int_distribution<int> & dist, uniform_real_distribution<double> & distReal);
+	VNS(Instance & inst, default_random_engine & gen, uniform_int_distribution<int> & dist, uniform_real_distribution<double> & distReal, bool withoutLast);
 	VNS(Solution & s);
 	~VNS();
 
@@ -23,22 +23,22 @@ public:
 	double randReal();
 
 	void VNS_SA(SA & sa);
-	void generalVNS(bool bestImprovement);
-	void reducedVNS(bool randConst, bool bestImprovement);
-	void basicVNS(bool bestImprovement);
-	void run(bool randConst, bool rvnd, bool bestImprovement);
+	void generalVNS(bool firstImprovement);
+	void reducedVNS(bool randConst, bool firstImprovement);
+	void basicVNS(bool firstImprovement);
+	void run(bool randConst, bool rvnd, bool firstImprovement);
 
 	void shake(bool randShakeNeighborhood);
-	void VND(bool bestImprovement);
-	void RVND(bool bestImprovement);
+	void VND(bool firstImprovement);
+	void RVND(bool firstImprovement);
 
-	void neighborhoodSearch(bool bestImprovement);
+	void neighborhoodSearch(bool firstImprovement);
 	
-	void swapTwoNeighborhoodSearch(bool fix, bool bestImprovement);
-	void swapAdjacentNeighborhoodSearch(bool fix, bool bestImprovement);
-	void removeInsertNeighborhoodSearch(bool fix, bool bestImprovement);
-	void twoOptNeighborhoodSearch(bool fix, bool bestImprovement);
-	void orOptNeighborhoodSearch(bool fix, bool bestImprovement);
+	void swapTwoNeighborhoodSearch(bool fix, bool firstImprovement);
+	void swapAdjacentNeighborhoodSearch(bool fix, bool firstImprovement);
+	void removeInsertNeighborhoodSearch(bool fix, bool firstImprovement);
+	void twoOptNeighborhoodSearch(bool fix, bool firstImprovement);
+	void orOptNeighborhoodSearch(bool fix, bool firstImprovement);
 
 	void swapTwoShake();
 	void swapAdjacentShake();

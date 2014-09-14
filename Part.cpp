@@ -1,5 +1,5 @@
 #include "Part.h"
-
+#include <iostream>
 
 Part::Part()
 {
@@ -29,7 +29,14 @@ Part & Part::add(Part & a, Solution & s)
 	r = a.r;// -a.l + r + 1;
 	return *this;
 }
-double Part::finalCost(Solution & s)
+double Part::finalCost(Solution & s, bool withoutLast)
 {
-	return C + T + s.inst.cost[s.route[r]][0];
+	if (withoutLast==false)
+	{
+		return (C + T + s.inst.cost[s.route[r]][0]);
+	}
+	else
+	{
+		return C;
+	}
 }

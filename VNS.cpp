@@ -10,7 +10,7 @@ VNS::VNS()
 	distribution = d1;
 }
 
-VNS::VNS(Instance & inst, default_random_engine & gen, uniform_int_distribution<int> & dist, uniform_real_distribution<double> & distReal)
+VNS::VNS(Instance & inst, default_random_engine & gen, uniform_int_distribution<int> & dist, uniform_real_distribution<double> & distReal, bool withoutLast)
 {
 	generator = gen;
 	distribution = dist;
@@ -18,7 +18,7 @@ VNS::VNS(Instance & inst, default_random_engine & gen, uniform_int_distribution<
 	MAXIter = 20;
 	kMax = 5;
 	//kMax = 3;
-	sol = *(new Solution(inst,gen,dist));
+	sol = *(new Solution(inst,gen,dist,withoutLast));
 }
 
 VNS::~VNS()
@@ -45,7 +45,7 @@ double VNS::randReal()
 
 
 
-void VNS::swapTwoNeighborhoodSearch(bool fix, bool bestImprovement)
+void VNS::swapTwoNeighborhoodSearch(bool fix, bool firstImprovement)
 {
 	double bestCost = sol.cost, x;
 	int iBest = -1, jBest;
@@ -63,7 +63,7 @@ void VNS::swapTwoNeighborhoodSearch(bool fix, bool bestImprovement)
 					bestCost = x;
 					iBest = i;
 					jBest = j;
-					if (bestImprovement)
+					if (firstImprovement)
 					{
 						found = true;
 						break;
@@ -86,7 +86,7 @@ void VNS::swapTwoNeighborhoodSearch(bool fix, bool bestImprovement)
 				bestCost = x;
 				iBest = i;
 				jBest = j;
-				if (bestImprovement)
+				if (firstImprovement)
 				{
 					found = true;
 					break;
@@ -100,7 +100,7 @@ void VNS::swapTwoNeighborhoodSearch(bool fix, bool bestImprovement)
 		sol.swapTwo(iBest,jBest);
 	}
 }
-void VNS::swapAdjacentNeighborhoodSearch(bool fix, bool bestImprovement)
+void VNS::swapAdjacentNeighborhoodSearch(bool fix, bool firstImprovement)
 {
 	double bestCost = sol.cost, x;
 	int iBest=-1;
@@ -113,7 +113,7 @@ void VNS::swapAdjacentNeighborhoodSearch(bool fix, bool bestImprovement)
 			{
 				bestCost = x;
 				iBest = i;
-				if (bestImprovement)
+				if (firstImprovement)
 				{
 					found = true;
 					break;
@@ -138,7 +138,7 @@ void VNS::swapAdjacentNeighborhoodSearch(bool fix, bool bestImprovement)
 		sol.swapAdjacent(iBest);
 	}
 }
-void VNS::removeInsertNeighborhoodSearch(bool fix, bool bestImprovement)
+void VNS::removeInsertNeighborhoodSearch(bool fix, bool firstImprovement)
 {
 	double bestCost = sol.cost, x;
 	int iBest=-1, jBest;
@@ -156,7 +156,7 @@ void VNS::removeInsertNeighborhoodSearch(bool fix, bool bestImprovement)
 					bestCost = x;
 					iBest = i;
 					jBest = j;
-					if (bestImprovement)
+					if (firstImprovement)
 					{
 						found = true;
 						break;
@@ -179,7 +179,7 @@ void VNS::removeInsertNeighborhoodSearch(bool fix, bool bestImprovement)
 				bestCost = x;
 				iBest = i;
 				jBest = j;
-				if (bestImprovement)
+				if (firstImprovement)
 				{
 					found = true;
 					break;
@@ -194,7 +194,7 @@ void VNS::removeInsertNeighborhoodSearch(bool fix, bool bestImprovement)
 		sol.removeInsert(iBest, jBest);
 	}
 }
-void VNS::twoOptNeighborhoodSearch(bool fix, bool bestImprovement)
+void VNS::twoOptNeighborhoodSearch(bool fix, bool firstImprovement)
 {
 	double bestCost = sol.cost, x;
 	int iBest=-1, jBest;
@@ -210,7 +210,7 @@ void VNS::twoOptNeighborhoodSearch(bool fix, bool bestImprovement)
 					bestCost = x;
 					iBest = i;
 					jBest = j;
-					if (bestImprovement)
+					if (firstImprovement)
 					{
 						found = true;
 						break;
@@ -231,7 +231,7 @@ void VNS::twoOptNeighborhoodSearch(bool fix, bool bestImprovement)
 				bestCost = x;
 				iBest = i;
 				jBest = j;
-				if (bestImprovement)
+				if (firstImprovement)
 				{
 					found = true;
 					break;
@@ -246,7 +246,7 @@ void VNS::twoOptNeighborhoodSearch(bool fix, bool bestImprovement)
 		sol.twoOpt(iBest, jBest);
 	}
 }
-void VNS::orOptNeighborhoodSearch(bool fix, bool bestImprovement)
+void VNS::orOptNeighborhoodSearch(bool fix, bool firstImprovement)
 {
 	double bestCost = sol.cost, x;
 	int iBest = -1, jBest, kBest;
@@ -265,7 +265,7 @@ void VNS::orOptNeighborhoodSearch(bool fix, bool bestImprovement)
 						iBest = i;
 						jBest = j;
 						kBest = k;
-						if (bestImprovement)
+						if (firstImprovement)
 						{
 							found = true;
 							break;
@@ -293,7 +293,7 @@ void VNS::orOptNeighborhoodSearch(bool fix, bool bestImprovement)
 					iBest = i;
 					jBest = j;
 					kBest = k;
-					if (bestImprovement)
+					if (firstImprovement)
 					{
 						found = true;
 						break;
@@ -394,20 +394,20 @@ void VNS::doubleBridgeMove()
 
 	sol.doubleBridge(i,j,k);
 }
-void VNS::neighborhoodSearch(bool bestImprovement)
+void VNS::neighborhoodSearch(bool firstImprovement)
 {
 	bool fix = false;
 	switch (kVND)
 	{
-	case 0: swapAdjacentNeighborhoodSearch(fix, bestImprovement);
+	case 0: swapAdjacentNeighborhoodSearch(fix, firstImprovement);
 		break;
-	case 1: swapTwoNeighborhoodSearch(fix, bestImprovement);
+	case 1: swapTwoNeighborhoodSearch(fix, firstImprovement);
 		break;
-	case 2: removeInsertNeighborhoodSearch(fix, bestImprovement);
+	case 2: removeInsertNeighborhoodSearch(fix, firstImprovement);
 		break;
-	case 3: twoOptNeighborhoodSearch(fix, bestImprovement);
+	case 3: twoOptNeighborhoodSearch(fix, firstImprovement);
 		break;
-	case 4: orOptNeighborhoodSearch(fix, bestImprovement);
+	case 4: orOptNeighborhoodSearch(fix, firstImprovement);
 		break;
 	}
 }
@@ -430,7 +430,7 @@ void VNS::shake(bool randShakeNeighborhood)
 	}
 }
 
-void VNS::VND(bool bestImprovement)
+void VNS::VND(bool firstImprovement)
 {
 	double oldCost, bestCost;
 	oldCost = bestCost = sol.cost;
@@ -441,7 +441,7 @@ void VNS::VND(bool bestImprovement)
 	while (kVND < kMax)
 	{
 		sol.reoptimizeDataStructures();
-		neighborhoodSearch(bestImprovement);
+		neighborhoodSearch(firstImprovement);
 		if (sol.cost < bestCost)
 		{
 			kVND = 0;
@@ -466,7 +466,7 @@ void VNS::VND(bool bestImprovement)
 /*
  * random neighborhood
 */
-void VNS::RVND(bool bestImprovement)
+void VNS::RVND(bool firstImprovement)
 {
 	double oldCost, bestCost;
 	oldCost = bestCost = sol.cost;
@@ -487,7 +487,7 @@ void VNS::RVND(bool bestImprovement)
 		kVND = rand(0, neighborhoods.size());
 		 
 		sol.reoptimizeDataStructures();
-		neighborhoodSearch(bestImprovement);
+		neighborhoodSearch(firstImprovement);
 		if (sol.cost < bestCost)
 		{
 			neighborhoods.clear();
@@ -521,7 +521,7 @@ void VNS::RVND(bool bestImprovement)
 		sol.route = vector<int>(bestRoute);
 	}
 }
-void VNS::run(bool randConst, bool rvnd, bool bestImprovement)
+void VNS::run(bool randConst, bool rvnd, bool firstImprovement)
 {
 	int iter = 0;
 	double oldCost, bestCost, globalBestCost;
@@ -562,11 +562,11 @@ void VNS::run(bool randConst, bool rvnd, bool bestImprovement)
 			//vnd/rvnd
 			if (rvnd)
 			{
-				RVND(bestImprovement);
+				RVND(firstImprovement);
 			}
 			else
 			{
-				VND(bestImprovement);
+				VND(firstImprovement);
 			}
 			
 			//decision
@@ -595,7 +595,7 @@ void VNS::run(bool randConst, bool rvnd, bool bestImprovement)
 	sol.route = vector<int>(globalBestRoute);
 
 }
-void VNS::generalVNS(bool bestImprovement)
+void VNS::generalVNS(bool firstImprovement)
 {
 	int iter = 0;
 	double oldCost, bestCost, globalBestCost;
@@ -620,7 +620,7 @@ void VNS::generalVNS(bool bestImprovement)
 			shake(false);
 				
 			//vnd
-			VND(bestImprovement);
+			VND(firstImprovement);
 			
 
 			//decision
@@ -647,7 +647,7 @@ void VNS::generalVNS(bool bestImprovement)
 	sol.route = globalBestRoute;
 
 }
-void VNS::reducedVNS(bool randConst, bool bestImprovement)
+void VNS::reducedVNS(bool randConst, bool firstImprovement)
 {
 	int iter = 0;
 	double oldCost, bestCost, globalBestCost;

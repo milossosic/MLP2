@@ -8,7 +8,7 @@ class Solution
 {
 public:
 	Solution();
-	Solution(Instance & inst1, default_random_engine & gen, uniform_int_distribution<int> & dist);
+	Solution(Instance & inst1, default_random_engine & gen, uniform_int_distribution<int> & dist, bool withoutLast);
 	~Solution();
 
 	Instance inst;
@@ -22,6 +22,8 @@ public:
 	double **C;
 	int **W;
 	
+	bool withoutLast;
+
 	std::default_random_engine generator;
 	std::uniform_int_distribution<int> distribution;
 	int rand(int p, int d);

@@ -8,7 +8,7 @@ public:
 	~Test();
 
 	double minCost;
-	double avgCost;
+	double avgCost, avgCost2;
 	double avgTime;
 
 

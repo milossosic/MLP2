@@ -28,7 +28,7 @@ void Test::runVNS(char * argv, int iterations)
 	
 
 	Config conf;
-	conf.fIn = string(argv);
+	//conf.fIn = string(argv);
 	
 	Writer writer(conf);
 	
@@ -44,7 +44,7 @@ void Test::runVNS(char * argv, int iterations)
 	//conf.fIn = "instances/06.eil51.xml"; //+
 	//conf.fIn = "instances/berlin52.xml"; //+
 	//conf.fIn = "instances/brazil58.xml"; 
-	//conf.fIn = "instances/st70.xml"; //+
+	//conf.fIn = "instances/09.st70.xml"; //+
 	//conf.fIn = "instances/eil76.xml"; 
 	//conf.fIn = "instances/pr76.xml"; 
 
@@ -66,6 +66,9 @@ void Test::runVNS(char * argv, int iterations)
 	//conf.fIn = "instances//vece/pr439.xml";
 	//conf.fIn = "instances/vece/att532.xml";
 
+	conf.fIn = "instances/random\/TRP-S200-R1.xml";
+	//conf.fIn = "instances/random\/TRP-S10-R1.xml";
+
 	cout << conf.fIn << endl;
 
 	Reader reader(conf);
@@ -78,13 +81,7 @@ void Test::runVNS(char * argv, int iterations)
 
 	// 0  1000   300    10  0.91 10254 10586 1.870399976
 	// 0   400   300    20  0.97 10297 10760.4 1.108599973
-	SA sa;
-
-	int maxTemp = 600;
-	double cool = .8;
-	int minTemp = inst.dimension / 4;
-	int iter = 0;
-	int iterDiv = inst.dimension * 20;
+	
 
 	//for (int iter = 0; iter < 1;iter+=2)
 	//{
@@ -137,37 +134,70 @@ void Test::runVNS(char * argv, int iterations)
 
 	
 
-	sa.init(maxTemp, cool, minTemp, iter, iterDiv);
+	
+
+	/*for (int i = 0; i < inst.dimension; i++)
+	{
+		for (int j = 0; j < inst.dimension; j++)
+		{
+			cout << inst.cost[i][j] << " ";
+		}
+		cout << endl;
+	}*/
+
 	//cout <<"minTemp: " <<minTemp<< " maxTemp: " << maxTemp << " iterDiv: " << iterDiv<<endl;
 	for (int i = 0; i < iterations; i++)
 	{
+		SA sa;
+
+		int maxTemp = 600 + inst.dimension * 2;
+		double cool = .8;
+		int minTemp = inst.dimension / 4;
+		int iter = 0;
+		int iterDiv = 700 + inst.dimension * 2;
+
+		sa.init(maxTemp, cool, minTemp, iter, iterDiv);
+
 		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 		std::default_random_engine gen(seed);
 		std::uniform_int_distribution<int> dist(0, 3123121);
 		std::uniform_real_distribution<double> distReal(0.0, 1.0);
 		bool randConst = false, rvnd = false;
 		bool firstImprovement = false;
+		bool finalResultWithoutLast = true;
 
-		VNS vns(inst, gen, dist, distReal);
+
+		VNS vns(inst, gen, dist, distReal, finalResultWithoutLast);
 		
 		time_t t = clock();
 		vns.VNS_SA(sa);
+		//vns.run(false, false, false);
 		float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
 
 		costs.push_back(vns.sol.cost);
 		times.push_back(time1);
 
 		cout << setprecision(10) << vns.sol.cost << " " << setprecision(10) << time1 << endl;
+		
+		/*for (int i = 0; i < inst.dimension; i++)
+		{
+			cout << vns.sol.route[i] << " ";
+		}
+		cout << endl;*/
 	}
 	calcAll(iterations, costs, times);
-	//cout << minCost << " " << avgCost << " " << avgTime << endl;
+	cout << "------------------------------------------------------" << endl;
+	cout << minCost << " " << avgCost << " " << avgTime << endl;
 	writer.out << minCost << " " << avgCost << " " << avgTime << endl;
 	writer.close();
+
+	//getchar(); getchar();
 }
 
 void Test::calcAll(int iter, vector<double> & costs, vector<double> & times)
 {
 	minCost = DBL_MAX;
+	
 	double sumCosts = 0, sumTimes = 0;
 	for (int i = 0; i < iter; i++)
 	{
@@ -180,5 +210,4 @@ void Test::calcAll(int iter, vector<double> & costs, vector<double> & times)
 	}
 	avgCost = sumCosts / iter;
 	avgTime = sumTimes / iter;
-
 }

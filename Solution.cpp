@@ -7,8 +7,9 @@ Solution::Solution()
 {
 }
 
-Solution::Solution(Instance & inst1, default_random_engine & gen, uniform_int_distribution<int> & dist)
+Solution::Solution(Instance & inst1, default_random_engine & gen, uniform_int_distribution<int> & dist, bool _withoutLast)
 {
+	withoutLast = _withoutLast;
 	inst = Instance(inst1);
 	int dim = inst.dimension;
 	nodesVisited.resize(dim);
@@ -63,7 +64,14 @@ void Solution::greedyConstruct()
 			}
 		}
 	}
-	totalCost();
+	if (withoutLast)
+	{
+		totalCostWithoutLast();
+	}
+	else
+	{
+		totalCost();
+	}
 }
 void Solution::greedyRandomConstruct(int alpha)
 {
@@ -104,7 +112,14 @@ void Solution::greedyRandomConstruct(int alpha)
 		r = rand(0, temp.size());
 		setRouteNode(i, temp[r]);
 	}
-	totalCost();
+	if (withoutLast)
+	{
+		totalCostWithoutLast();
+	}
+	else
+	{
+		totalCost();
+	}
 }
 
 void Solution::reoptimizeDataStructures()
@@ -149,7 +164,7 @@ double Solution::costRemoveInsert(int i, int j)
 				Part r2(*this, j + 1, route.size() - 1);
 				l1.add(r2, *this);
 			}
-			return l1.finalCost(*this);
+			return l1.finalCost(*this,withoutLast);
 	}
 	else
 	{
@@ -162,7 +177,7 @@ double Solution::costRemoveInsert(int i, int j)
 				Part r2(*this, i + 1, route.size() - 1);
 				l1.add(r2, *this);	
 			}
-			return l1.finalCost(*this);
+			return l1.finalCost(*this, withoutLast);
 	}
 	return 0;
 }
@@ -189,7 +204,7 @@ double Solution::costSwapTwo(int i, int j)
 		Part r3(*this, j + 1, route.size() - 1);
 		l1.add(r3, *this);
 	}
-	return l1.finalCost(*this);
+	return l1.finalCost(*this, withoutLast);
 }
 double Solution::costSwapAdjacent(int i)
 {
@@ -202,7 +217,7 @@ double Solution::costSwapAdjacent(int i)
 		Part r2(*this, i + 2, route.size() - 1);
 		l1.add(r2, *this);
 	}
-	return l1.finalCost(*this);
+	return l1.finalCost(*this, withoutLast);
 }
 double Solution::costTwoOpt(int i, int j)
 {
@@ -216,7 +231,7 @@ double Solution::costTwoOpt(int i, int j)
 		l1.add(r1, *this);
 	}
 	
-	return l1.finalCost(*this);
+	return l1.finalCost(*this, withoutLast);
 }
 double Solution::costOrOpt(int i, int j, int k)
 {
@@ -225,7 +240,7 @@ double Solution::costOrOpt(int i, int j, int k)
 	Part r1(*this, i + 1, j);
 	Part r2(*this, k + 1, route.size() - 1);
 	l1.add(l2, *this).add(r1, *this).add(r2, *this);
-	return l1.finalCost(*this);
+	return l1.finalCost(*this, withoutLast);
 }
 
 void Solution::setRouteNode(int i, int j)
@@ -241,7 +256,7 @@ bool Solution::nodeFree(int j)
 
 double Solution::totalCost()
 {
-	double totalCost = 0;
+	/*double totalCost = 0;
 	int dim = route.size();
 	
 	for (int i = 1; i < route.size();i++)
@@ -249,6 +264,15 @@ double Solution::totalCost()
 		totalCost += ((double)dim--)  * inst.cost[route[i - 1]][route[i]];
 	}
 	cost = totalCost+inst.cost[route[route.size()-1]][0];
+	return cost;*/
+	double totalCost = 0;
+	int dim = route.size() - 1;
+
+	for (int i = 1; i < route.size(); i++)
+	{
+		totalCost += ((double)dim--)  * inst.cost[route[i - 1]][route[i]];
+	}
+	cost = totalCost;
 	return cost;
 }
 double Solution::totalCostWithoutLast()
@@ -336,5 +360,5 @@ void Solution::doubleBridge(int i, int j, int k)
 	Part p3(*this, j + 1, k);
 	Part p4(*this, i + 1, j);
 	p1.add(p2, *this).add(p3, *this).add(p4, *this);
-	cost = p1.finalCost(*this);
+	cost = p1.finalCost(*this, withoutLast);
 }

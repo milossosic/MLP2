@@ -39,6 +39,7 @@ void SA::run(VNS & vns)
 		for (int it = 0; it < iterDiv/currentTemp + iter; it++)
 		{
 			vns.sol.reoptimizeDataStructures();
+			oldCost = vns.sol.cost;
 
 			switch (vns.kVNS)
 			{

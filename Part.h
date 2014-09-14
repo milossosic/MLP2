@@ -11,6 +11,6 @@ public:
 	double T=-1, W=-1, C=-1;
 
 	Part & add(Part & a, Solution & s);
-	double finalCost(Solution & s);
+	double finalCost(Solution & s, bool withoutLast);
 };
 
