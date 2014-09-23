@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <TSP_raw_instance>
+<opt>91977</opt>
 <dim>200</dim>
 	<coordinates x="4" y="2"></coordinates>
 	<coordinates x="9" y="36"></coordinates>

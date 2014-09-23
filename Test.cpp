@@ -12,6 +12,8 @@
 #include <chrono>
 #include <cmath>
 #include "SA.h"
+
+
 using namespace std;
 
 Test::Test()
@@ -22,7 +24,14 @@ Test::Test()
 Test::~Test()
 {
 }
-
+int min(int x, int y)
+{
+	return (x < y ? x : y);
+}
+int max(int x, int y)
+{
+	return (x > y ? x : y);
+}
 void Test::runVNS(char * argv, int iterations)
 {
 	
@@ -38,7 +47,7 @@ void Test::runVNS(char * argv, int iterations)
 	//conf.fIn = "instances/18.kroD100.xml";
 
 	//conf.fIn = "instances/random\/TRP-S200-R01.xml";
-	//conf.fIn = "instances/random\/TRP-S10-R1.xml";
+	//conf.fIn = "instances/random\/TRP-S010-R01.xml";
 
 	cout << conf.fIn << endl;
 
@@ -103,70 +112,73 @@ void Test::runVNS(char * argv, int iterations)
 	//}
 	
 
+	SA sa;
+
+	int maxTemp = max(300 + inst.dimension * 2, 400);
+	double cool = .8;
+	int minTemp = min((inst.dimension / 4), 20);
+	int iter = 0;
+	int iterDiv = max(700 + inst.dimension * 2, 1000);
+
+	long optCost = inst.optCost;
 	
-
-	
-
-	/*for (int i = 0; i < inst.dimension; i++)
-	{
-		for (int j = 0; j < inst.dimension; j++)
-		{
-			cout << inst.cost[i][j] << " ";
-		}
-		cout << endl;
-	}*/
-
-	//cout <<"minTemp: " <<minTemp<< " maxTemp: " << maxTemp << " iterDiv: " << iterDiv<<endl;
-	for (int i = 0; i < iterations; i++)
-	{
-		SA sa;
-
-		int maxTemp = 600 + inst.dimension * 2;
-		double cool = .8;
-		int minTemp = inst.dimension / 4;
-		int iter = 0;
-		int iterDiv = 700 + inst.dimension * 2;
-
+	//for (iter = 0; iter<= 15; iter+= 1)
+	//{
+		//cout << "iter: " << iter << " cost: ";
 		sa.init(maxTemp, cool, minTemp, iter, iterDiv);
 
-		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-		std::default_random_engine gen(seed);
-		std::uniform_int_distribution<int> dist(0, 3123121);
-		std::uniform_real_distribution<double> distReal(0.0, 1.0);
-		bool randConst = false, rvnd = false;
-		bool firstImprovement = false;
-		bool finalResultWithoutLast = true;
+		costs.clear();
+		times.clear();
+		for (int i = 0; i < iterations; i++)
+		{
+			unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+			std::default_random_engine gen(seed);
+			std::uniform_int_distribution<int> dist(0, 3123121);
+			std::uniform_real_distribution<double> distReal(0.0, 1.0);
+			bool randConst = false, rvnd = false;
+			bool firstImprovement = false;
+			bool finalResultWithoutLast = true;
+			
 
+			VNS vns(inst, gen, dist, distReal, finalResultWithoutLast);
 
-		VNS vns(inst, gen, dist, distReal, finalResultWithoutLast);
+			time_t t = clock();
+			vns.VNS_SA(sa);
+			//vns.run(false, false, false);
+			float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
+
+			costs.push_back(vns.sol.cost);
+			times.push_back(time1);
+
+			//for (int i = 0; i < vns.sol.route.size(); i++)
+			//{
+			//	cout << vns.sol.route[i] << " " ;
+			//}
+			//cout << endl << vns.sol.cost<<endl;
+		}
+		calcAll(iterations, costs, times, optCost);
+
+		cout << setprecision(10) << minCost << " " << setprecision(10) << avgCost << " " << setprecision(10) << avgGap << " " << avgTime << endl;
 		
-		time_t t = clock();
-		vns.VNS_SA(sa);
-		//vns.run(false, false, false);
-		float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
+		writer.out << setprecision(10) << minCost << " " << setprecision(10) << avgCost << " " << setprecision(5) << avgGap << " " << avgTime << endl;
 
-		costs.push_back(vns.sol.cost);
-		times.push_back(time1);
-
-		//cout << setprecision(10) << vns.sol.cost << " " << setprecision(10) << time1 << endl;
-	}
-	calcAll(iterations, costs, times);
-	//cout << "------------------------------------------------------" << endl;
-	cout << setprecision(10) << minCost << " " << setprecision(10) << avgCost << " " << avgTime << endl;
-	writer.out << setprecision(10) << minCost << " " << setprecision(10) << avgCost << " " << avgTime << endl;
+	//}
 	writer.close();
-
-	//getchar(); getchar();
 }
 
-void Test::calcAll(int iter, vector<long> & costs, vector<double> & times)
+void Test::calcAll(int iter, vector<long> & costs, vector<double> & times, long opt)
 {
 	minCost = DBL_MAX;
 	
 	double sumCosts = 0;
 	double sumTimes = 0;
+
+	double sumGap = 0;
+	double gap;
 	for (int i = 0; i < iter; i++)
 	{
+		gap = (costs[i] - opt)*1.0 / opt;
+		sumGap += gap;
 		if (costs[i] < minCost)
 		{
 			minCost = costs[i];
@@ -174,6 +186,8 @@ void Test::calcAll(int iter, vector<long> & costs, vector<double> & times)
 		sumCosts += costs[i];
 		sumTimes += times[i];
 	}
+
+	avgGap = 100.0*sumGap / iter;
 	avgCost = sumCosts / iter;
 	avgTime = sumTimes / iter;
 }

@@ -27,7 +27,7 @@ VNS::~VNS()
 
 VNS::VNS(Solution & s)
 {
-	MAXIter = 20;
+	MAXIter = 5;
 	kMax = 5;
 	sol = s;
 	std::uniform_int_distribution<int> d1(0, 12312);
@@ -438,24 +438,28 @@ void VNS::VND(bool firstImprovement)
 	bestRoute = oldRoute = vector<int>(sol.route);
 
 	kVND = 0;
-	while (kVND < kMax)
-	{
-		sol.reoptimizeDataStructures();
-		neighborhoodSearch(firstImprovement);
-		if (sol.cost < bestCost)
+	//do
+	//{
+		//oldCost = sol.cost;
+		while (kVND < kMax)
 		{
-			kVND = 0;
-			bestCost = sol.cost;
-			bestRoute = vector<int>(sol.route);
-		}
-		else
-		{
-			kVND++;
-			sol.cost = bestCost;
-			sol.route = vector<int>(bestRoute);
-		}
+			sol.reoptimizeDataStructures();
+			neighborhoodSearch(firstImprovement);
+			if (sol.cost < bestCost)
+			{
+				kVND = 0;
+				bestCost = sol.cost;
+				bestRoute = vector<int>(sol.route);
+			}
+			else
+			{
+				kVND++;
+				sol.cost = bestCost;
+				sol.route = vector<int>(bestRoute);
+			}
 
-	}
+		}
+	//} while (sol.cost < oldCost);
 
 	if (bestCost < sol.cost)
 	{
@@ -465,7 +469,7 @@ void VNS::VND(bool firstImprovement)
 }
 /*
  * random neighborhood
-*/
+ */
 void VNS::RVND(bool firstImprovement)
 {
 	double oldCost, bestCost;
@@ -723,33 +727,40 @@ void VNS::VNS_SA(SA & sa)
 			oldRoute = vector<int>(sol.route);
 			oldCost = sol.cost;
 
-			//shake
-			for (int i = 0; i < 6; i++)
-			{
-				shake(randShake);
-				randShake = !randShake;
-				sol.reoptimizeDataStructures();
-			}
+			
 
 			//vnd
-			if (iterSameSol >= 50)
+			if (iterSameSol >= MAXIter*2)
 			{
 				if ((iterSameSol ) % 10 < 7)
 				{
 					sa.run(*this);
-					//cout << "s";
 				}
 				else
 				{
+					//shake
+					for (int i = 0; i < 6; i++)
+					{
+						shake(randShake);
+						randShake = !randShake;
+						//doubleBridgeMove();
+						sol.reoptimizeDataStructures();
+					}
 					VND(true);
-					//cout << "V";
 				}
 				
 			}
 			else
 			{
+				//shake
+				for (int i = 0; i < 6; i++)
+				{
+					shake(randShake);
+					randShake = !randShake;
+					//doubleBridgeMove();
+					sol.reoptimizeDataStructures();
+				}
 				VND(false);
-				//cout << "v";
 			}
 			
 

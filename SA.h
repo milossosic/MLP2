@@ -13,7 +13,7 @@ public:
 	int iter;
 	int iterDiv;
 
-	void init(int & _maxTemp, double & cool, int & _minTemp, int & _iter, int & _iterDiv);
+	void init(int  _maxTemp, double  cool, int  _minTemp, int  _iter, int  _iterDiv);
 
 	void run(VNS & s);
 };

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<TSP_raw_instance>
+
+  <opt>12139</opt>
+<dim>50</dim>
+	<coordinates x="72" y="57"></coordinates>
+	<coordinates x="31" y="21"></coordinates>
+	<coordinates x="89" y="96"></coordinates>
+	<coordinates x="4" y="38"></coordinates>
+	<coordinates x="73" y="87"></coordinates>
+	<coordinates x="56" y="60"></coordinates>
+	<coordinates x="42" y="73"></coordinates>
+	<coordinates x="10" y="84"></coordinates>
+	<coordinates x="41" y="72"></coordinates>
+	<coordinates x="10" y="40"></coordinates>
+	<coordinates x="53" y="48"></coordinates>
+	<coordinates x="66" y="50"></coordinates>
+	<coordinates x="4" y="25"></coordinates>
+	<coordinates x="67" y="14"></coordinates>
+	<coordinates x="40" y="47"></coordinates>
+	<coordinates x="65" y="63"></coordinates>
+	<coordinates x="58" y="17"></coordinates>
+	<coordinates x="27" y="19"></coordinates>
+	<coordinates x="70" y="5"></coordinates>
+	<coordinates x="72" y="98"></coordinates>
+	<coordinates x="71" y="66"></coordinates>
+	<coordinates x="74" y="5"></coordinates>
+	<coordinates x="99" y="62"></coordinates>
+	<coordinates x="64" y="53"></coordinates>
+	<coordinates x="55" y="24"></coordinates>
+	<coordinates x="99" y="60"></coordinates>
+	<coordinates x="71" y="52"></coordinates>
+	<coordinates x="37" y="39"></coordinates>
+	<coordinates x="95" y="81"></coordinates>
+	<coordinates x="86" y="61"></coordinates>
+	<coordinates x="79" y="21"></coordinates>
+	<coordinates x="66" y="82"></coordinates>
+	<coordinates x="43" y="88"></coordinates>
+	<coordinates x="55" y="29"></coordinates>
+	<coordinates x="95" y="49"></coordinates>
+	<coordinates x="41" y="36"></coordinates>
+	<coordinates x="80" y="82"></coordinates>
+	<coordinates x="78" y="4"></coordinates>
+	<coordinates x="52" y="85"></coordinates>
+	<coordinates x="52" y="12"></coordinates>
+	<coordinates x="25" y="31"></coordinates>
+	<coordinates x="48" y="22"></coordinates>
+	<coordinates x="0" y="99"></coordinates>
+	<coordinates x="44" y="17"></coordinates>
+	<coordinates x="29" y="89"></coordinates>
+	<coordinates x="10" y="16"></coordinates>
+	<coordinates x="15" y="39"></coordinates>
+	<coordinates x="35" y="4"></coordinates>
+	<coordinates x="7" y="61"></coordinates>
+	<coordinates x="67" y="21"></coordinates>
+	<coordinates x="78" y="8"></coordinates>
+</TSP_raw_instance>

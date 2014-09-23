@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<TSP_raw_instance>
+
+  <opt>3314</opt>
+<dim>20</dim>
+	<coordinates x="100" y="19"></coordinates>
+	<coordinates x="94" y="85"></coordinates>
+	<coordinates x="79" y="93"></coordinates>
+	<coordinates x="9" y="4"></coordinates>
+	<coordinates x="97" y="4"></coordinates>
+	<coordinates x="11" y="5"></coordinates>
+	<coordinates x="21" y="11"></coordinates>
+	<coordinates x="85" y="13"></coordinates>
+	<coordinates x="88" y="14"></coordinates>
+	<coordinates x="47" y="55"></coordinates>
+	<coordinates x="24" y="49"></coordinates>
+	<coordinates x="100" y="71"></coordinates>
+	<coordinates x="38" y="77"></coordinates>
+	<coordinates x="44" y="24"></coordinates>
+	<coordinates x="81" y="60"></coordinates>
+	<coordinates x="3" y="4"></coordinates>
+	<coordinates x="64" y="80"></coordinates>
+	<coordinates x="34" y="42"></coordinates>
+	<coordinates x="20" y="4"></coordinates>
+	<coordinates x="87" y="15"></coordinates>
+	<coordinates x="4" y="54"></coordinates>
+</TSP_raw_instance>

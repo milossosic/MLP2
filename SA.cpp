@@ -15,7 +15,7 @@ SA::~SA()
 {
 }
 
-void SA::init(int & _maxTemp, double & cool, int & _minTemp, int & _iter, int & _iterDiv)
+void SA::init(int  _maxTemp, double  cool, int  _minTemp, int  _iter, int  _iterDiv)
 {
 	maxTemp = _maxTemp;
 	coolingRate = cool;
@@ -56,7 +56,11 @@ void SA::run(VNS & vns)
 			}
 
 			delta = cost - oldCost;
-			if (delta<0 || (delta > 0 && (vns.randReal() < exp(-delta / currentTemp))))
+
+			
+			double r;
+			double pr;
+			if (delta<0 )
 			{
 				switch (vns.kVNS)
 				{
@@ -75,6 +79,32 @@ void SA::run(VNS & vns)
 				{
 					bestCost = vns.sol.cost;
 					bestRoute = vector<int>(vns.sol.route);
+				}
+			}
+			else
+			{
+				r = vns.randReal();
+				pr = exp(-delta / currentTemp);
+				if (r < pr)
+				{
+					switch (vns.kVNS)
+					{
+					case 0: vns.sol.swapAdjacent(i); vns.sol.cost = cost;
+						break;
+					case 1: vns.sol.swapTwo(i, j); vns.sol.cost = cost;
+						break;
+					case 2: vns.sol.removeInsert(i, j); vns.sol.cost = cost;
+						break;
+					case 3: vns.sol.twoOpt(i, j); vns.sol.cost = cost;
+						break;
+					case 4: vns.sol.orOpt(i, j, k); vns.sol.cost = cost;
+						break;
+					}
+					if (vns.sol.cost < bestCost)
+					{
+						bestCost = vns.sol.cost;
+						bestRoute = vector<int>(vns.sol.route);
+					}
 				}
 			}
 		}

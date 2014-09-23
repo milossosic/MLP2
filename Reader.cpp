@@ -35,6 +35,9 @@ void Reader::read(Config & c, Instance & inst)
 	}
 
 	XMLElement *graph = doc.RootElement()->FirstChildElement("graph");
+	double optCost;
+	doc.RootElement()->FirstChildElement("opt")->QueryDoubleText(&(optCost));
+	inst.optCost = long(optCost);
 	if (graph)
 	{
 		//XMLElement *graph1 = new XMLElement(graph);
@@ -72,6 +75,7 @@ void Reader::read(Config & c, Instance & inst)
 		int x, y;
 		int j;
 		int i = 0;
+		
 		for (XMLElement *vertex = doc.RootElement()->FirstChildElement("dim"); vertex; vertex = vertex->NextSiblingElement("coordinates"), i++)
 		{
 			if (i == 0)
