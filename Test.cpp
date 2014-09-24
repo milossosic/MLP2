@@ -75,7 +75,7 @@ void Test::runVNS(char * argv, int iterations)
 		{
 			unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 			std::default_random_engine gen(seed);
-			std::uniform_int_distribution<int> dist(0, 3123121);
+			std::uniform_int_distribution<int> dist(0, 387121);
 			std::uniform_real_distribution<double> distReal(0.0, 1.0);
 			bool randConst = false, rvnd = false;
 			bool firstImprovement = false;
@@ -86,7 +86,7 @@ void Test::runVNS(char * argv, int iterations)
 
 			time_t t = clock();
 			vns.VNS_SA(sa);
-			//vns.run(false, false, false);
+			///vns.run(false, false, false);
 			float time1 = ((float)(clock() - t)) / CLOCKS_PER_SEC;
 
 			costs.push_back(vns.sol.cost);
@@ -96,7 +96,7 @@ void Test::runVNS(char * argv, int iterations)
 			//{
 			//	cout << vns.sol.route[i] << " " ;
 			//}
-			//cout << endl << vns.sol.cost<<endl;
+			cout << setprecision(10) << vns.sol.cost << " " << time1 << endl;
 		}
 		calcAll(iterations, costs, times, optCost);
 

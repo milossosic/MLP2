@@ -6,7 +6,7 @@ VNS::VNS()
 {
 	MAXIter = 20;
 	kMax = 5;
-	std::uniform_int_distribution<int> d1(0, 12312);
+	std::uniform_int_distribution<int> d1(0, 123412);
 	distribution = d1;
 }
 
@@ -730,7 +730,7 @@ void VNS::VNS_SA(SA & sa)
 			
 
 			//vnd
-			if (iterSameSol >= MAXIter*2)
+			if (iterSameSol >=MAXIter*2)
 			{
 				if ((iterSameSol ) % 10 < 7)
 				{
@@ -739,14 +739,17 @@ void VNS::VNS_SA(SA & sa)
 				else
 				{
 					//shake
-					for (int i = 0; i < 6; i++)
-					{
+					//for (int i = 0; i < 6; i++)
+					//{
 						shake(randShake);
 						randShake = !randShake;
 						//doubleBridgeMove();
+						//sol.reoptimizeDataStructures();
+					//}
 						sol.reoptimizeDataStructures();
-					}
 					VND(true);
+					//if (sol.cost < 19710)
+					//cout << "fasddddddddddddddddddddddddddd";
 				}
 				
 			}
@@ -757,10 +760,14 @@ void VNS::VNS_SA(SA & sa)
 				{
 					shake(randShake);
 					randShake = !randShake;
-					//doubleBridgeMove();
+				//	doubleBridgeMove();
 					sol.reoptimizeDataStructures();
+					//if (sol.cost < 19710)
+					//cout << "fasddddddddddddddddddddddddddd";
 				}
 				VND(false);
+				//if (sol.cost < 19710)
+					//cout << "fasddddddddddddddddddddddddddd";
 			}
 			
 
